@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:fitsSystemWindows="true">
+<LinearLayout
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="56dp"
+    android:paddingLeft="24dp"
+    android:paddingRight="24dp"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:weightSum="1">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:weightSum="1"
+        >
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/logo128"
+            android:layout_gravity="center_horizontal"
+            android:layout_alignParentLeft="true"
+            />
+
+        <ImageView
+            android:id="@+id/userPhoto"
+            android:layout_alignParentRight="true"
+            android:layout_width="80dp"
+            android:layout_height="80dp"/>
+
+    </RelativeLayout>
+
+
+
+<RelativeLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+
+    >
+
+    <Button
+        android:id="@+id/uploadPhoto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Upload your photo"
+        android:padding="12dp"
+        android:onClick="onUploadButtonListener"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="8dp"
+        />
+    <Button
+        android:id="@+id/btn_useDefault"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="8dp"
+        android:padding="12dp"
+        android:text="Use default"
+        android:onClick="onDefaultPhotoListener"
+        android:layout_alignParentEnd="true"
+        />
+
+
+</RelativeLayout>
+
+
+
+    <!--  FirstName Label -->
+    <!--<android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp">-->
+        <EditText android:id="@+id/input_firstName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textCapWords"
+            android:hint="First name"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            />
+    <!--</android.support.design.widget.TextInputLayout>-->
+
+    <!--  LastName Label -->
+    <!--<android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp">-->
+        <EditText android:id="@+id/input_lastName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textCapWords"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:hint="Last name" />
+<!--
+    </android.support.design.widget.TextInputLayout>
+-->
+
+    <!-- Email Label -->
+    <!--<android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >-->
+        <EditText android:id="@+id/input_email"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textEmailAddress"
+            android:hint="@string/email" />
+   <!-- </android.support.design.widget.TextInputLayout>-->
+
+    <!-- Username Label -->
+    <!--<android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"-->
+        <EditText android:id="@+id/input_username"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Username"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            />
+    <!--</android.support.design.widget.TextInputLayout>-->
+
+    <!-- Password Label -->
+    <!--<android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">-->
+
+        <EditText android:id="@+id/input_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:inputType="textPassword"
+            android:hint="Password"/>
+    <!--</android.support.design.widget.TextInputLayout>-->
+
+    <!-- Signup Button -->
+    <Button
+        android:id="@+id/btn_signup"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="24dp"
+        android:padding="12dp"
+        android:text="@string/create_account"/>
+
+    <TextView android:id="@+id/link_login"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        android:text="@string/already_a_member_login"
+        android:gravity="center"
+        android:textSize="16dp"/>
+
+</LinearLayout>
+</ScrollView>

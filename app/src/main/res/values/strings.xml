@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">Se7enQ</string>
+    <string name="click">Click</string>
+    <string name="play">Play</string>
+    <string name="training">Training</string>
+    <string name="login">Login</string>
+    <string name="exit">Exit</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="Base_URL">http://192.168.1.4:64304/api/</string>
+    <string name="create_account">Create Account</string>
+    <string name="already_a_member_login">Already a member? Login</string>
+    <string name="email">Email</string>
+    <string name="username_register">Username</string>
+</resources>

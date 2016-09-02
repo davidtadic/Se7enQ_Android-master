@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingBottom="15dp"
+    android:paddingLeft="40dp"
+    android:paddingRight="40dp"
+    android:paddingTop="15dp"
+>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/text_logo"
+
+
+        />
+    
+
+    <Button
+        android:layout_gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/synonymsButton"
+        android:text="Synonyms"
+        android:layout_marginBottom="12dp"
+        android:background="@drawable/round_buttons1"
+        android:textSize="16sp"
+        />
+    <Button
+        android:layout_gravity="center"
+        android:layout_marginBottom="12dp"
+        android:background="@drawable/round_buttons1"
+        android:textSize="16sp"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/definitionsButton"
+        android:text="Definitions"
+
+        />
+    <Button
+        android:layout_gravity="center"
+        android:layout_marginBottom="12dp"
+        android:background="@drawable/round_buttons1"
+        android:textSize="16sp"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/arrayButton"
+        android:text="Array"
+
+        />
+    <Button
+        android:layout_gravity="center"
+        android:layout_marginBottom="12dp"
+        android:background="@drawable/round_buttons1"
+        android:textSize="16sp"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/memoryButton"
+        android:text="Memory"
+
+        />
+    <Button
+        android:layout_gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/projectionsButton"
+        android:text="Projections"
+        android:layout_marginBottom="12dp"
+        android:background="@drawable/round_buttons1"
+        android:textSize="16sp"
+
+        />
+    <Button
+        android:layout_gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/calculationsButton"
+        android:text="Calculations"
+        android:layout_marginBottom="12dp"
+        android:background="@drawable/round_buttons1"
+        android:textSize="16sp"
+
+        />
+    <Button
+        android:layout_gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/knowledgeButton"
+        android:text="General Knowledge"
+        android:layout_marginBottom="6dp"
+        android:background="@drawable/round_buttons1"
+        android:textSize="16sp"
+
+        />
+
+
+</LinearLayout>
