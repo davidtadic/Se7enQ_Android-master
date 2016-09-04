@@ -17,5 +17,9 @@
 
     </style>
 
+    <style name="MyThemeDarkDialog" parent="android:Theme.DeviceDefault.Dialog.NoActionBar">
+
+    </style>
+
 
 </resources>

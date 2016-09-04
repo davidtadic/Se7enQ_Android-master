@@ -69,9 +69,9 @@ public class LogInActivity extends Activity {
         _loginButton.setEnabled(false);
 
         final ProgressDialog progressDialog = new ProgressDialog(LogInActivity.this,
-                R.style.MyTheme);
+                R.style.MyThemeDarkDialog);
         progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Loading ...");
+        progressDialog.setMessage("Authenticating ...");
         progressDialog.show();
 
         UserLogin userLogin = new UserLogin();
@@ -91,18 +91,33 @@ public class LogInActivity extends Activity {
         userLoginCall.enqueue(new Callback<UserLogin>() {
             @Override
             public void onResponse(Call<UserLogin> call, Response<UserLogin> response) {
-                Intent intent = new Intent(LogInActivity.this, MainMenuActivity.class);
-                startActivity(intent);
+                progressDialog.dismiss();
+                if(response.message().equals("Bad Request")){
+                    onLoginFailed();
+                    Toast.makeText(getBaseContext(), "Wrong username or password", Toast.LENGTH_LONG).show();
+
+                }
+                else{
+                    onLoginSuccess();
+                    Toast.makeText(getBaseContext(), response.message(), Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(LogInActivity.this, MainMenuActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
+
+
             }
 
             @Override
             public void onFailure(Call<UserLogin> call, Throwable t) {
+                progressDialog.dismiss();
                 onLoginFailed();
+                Toast.makeText(getBaseContext(), t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
 
 
-        new android.os.Handler().postDelayed(
+        /*new android.os.Handler().postDelayed(
                 new Runnable() {
                     public void run() {
 
@@ -110,10 +125,10 @@ public class LogInActivity extends Activity {
                         // onLoginFailed();
                         progressDialog.dismiss();
                     }
-                }, 3000);
+                }, 3000);*/
     }
 
-    @Override
+    /*@Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_SIGNUP) {
             if (resultCode == RESULT_OK) {
@@ -122,17 +137,16 @@ public class LogInActivity extends Activity {
                 this.finish();
             }
         }
-    }
+    }*/
 
     public void onLoginSuccess() {
         _loginButton.setEnabled(true);
         Toast.makeText(getBaseContext(), "Login successful", Toast.LENGTH_SHORT).show();
-        finish();
+
     }
 
     public void onLoginFailed() {
         Toast.makeText(getBaseContext(), "Login failed", Toast.LENGTH_LONG).show();
-
         _loginButton.setEnabled(true);
     }
 

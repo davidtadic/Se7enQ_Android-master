@@ -105,9 +105,9 @@ public class RegisterActivity extends Activity {
         _signupButton.setEnabled(false);
 
         final ProgressDialog progressDialog = new ProgressDialog(RegisterActivity.this,
-                R.style.MyTheme);
+                R.style.MyThemeDarkDialog);
         progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Creating Account...");
+        progressDialog.setMessage("Authenticating...");
         progressDialog.show();
 
        /* Bitmap image = ((BitmapDrawable) userPhoto.getDrawable()).getBitmap();
@@ -139,22 +139,26 @@ public class RegisterActivity extends Activity {
         registerCall.enqueue(new Callback<UserRegister>() {
             @Override
             public void onResponse(Call<UserRegister> call, Response<UserRegister> response) {
-                Intent intent = new Intent(RegisterActivity.this, MainMenuActivity.class);
+                progressDialog.dismiss();
+                onSignupSuccess();
+                Toast.makeText(getBaseContext(), response.message(), Toast.LENGTH_LONG).show();
+
+                Intent intent = new Intent(RegisterActivity.this, LogInActivity.class);
                 startActivity(intent);
+                finish();
             }
 
             @Override
             public void onFailure(Call<UserRegister> call, Throwable t) {
-               
-                Intent intent = new Intent(RegisterActivity.this, MainMenuActivity.class);
-                startActivity(intent);
+                progressDialog.dismiss();
                 onSignupFailed();
+                Toast.makeText(getBaseContext(), t.getMessage(), Toast.LENGTH_LONG).show();
 
             }
         });
 
 
-        new android.os.Handler().postDelayed(
+        /*new android.os.Handler().postDelayed(
                 new Runnable() {
                     public void run() {
                         // On complete call either onSignupSuccess or onSignupFailed
@@ -163,18 +167,18 @@ public class RegisterActivity extends Activity {
                         // onSignupFailed();
                         progressDialog.dismiss();
                     }
-                }, 3000);
+                }, 3000);*/
     }
 
     public void onSignupSuccess() {
+        Toast.makeText(getBaseContext(), "Register successful", Toast.LENGTH_LONG).show();
         _signupButton.setEnabled(true);
         setResult(RESULT_OK, null);
-        finish();
+
     }
 
     public void onSignupFailed() {
         Toast.makeText(getBaseContext(), "Register failed", Toast.LENGTH_LONG).show();
-
         _signupButton.setEnabled(true);
     }
 
@@ -221,8 +225,6 @@ public class RegisterActivity extends Activity {
         } else {
             _passwordText.setError(null);
         }
-
-
 
         return valid;
     }

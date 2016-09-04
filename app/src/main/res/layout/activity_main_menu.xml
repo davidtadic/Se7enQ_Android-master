@@ -9,9 +9,7 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".MainMenuActivity">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+
 
         <ImageView
             android:layout_width="80dp"
@@ -20,17 +18,8 @@
             android:layout_alignParentLeft="true"
             />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Log Out"
-            android:id="@+id/logOutTextView"
-            android:layout_marginTop="10dp"
-            android:layout_alignParentRight="true"
-            android:textSize="18sp"
-            />
 
-    </RelativeLayout>
+
 
 
     <ImageView
