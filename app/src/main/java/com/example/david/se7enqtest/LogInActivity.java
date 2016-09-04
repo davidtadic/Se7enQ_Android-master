@@ -92,14 +92,13 @@ public class LogInActivity extends Activity {
             @Override
             public void onResponse(Call<UserLogin> call, Response<UserLogin> response) {
                 progressDialog.dismiss();
-                if(response.message().equals("Bad Request")){
+                if(response.message().equals("Bad Request") || response.message().equals("Internal Server Error")){
                     onLoginFailed();
-                    Toast.makeText(getBaseContext(), "Wrong username or password", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getBaseContext(), response.message(), Toast.LENGTH_LONG).show();
 
                 }
                 else{
                     onLoginSuccess();
-                    Toast.makeText(getBaseContext(), response.message(), Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(LogInActivity.this, MainMenuActivity.class);
                     startActivity(intent);
                     finish();

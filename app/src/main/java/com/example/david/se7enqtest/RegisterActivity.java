@@ -140,12 +140,21 @@ public class RegisterActivity extends Activity {
             @Override
             public void onResponse(Call<UserRegister> call, Response<UserRegister> response) {
                 progressDialog.dismiss();
-                onSignupSuccess();
-                Toast.makeText(getBaseContext(), response.message(), Toast.LENGTH_LONG).show();
+                if(response.message().equals("Internal Server Error")){
+                    onSignupFailed();
+                    Toast.makeText(getBaseContext(), response.message(), Toast.LENGTH_LONG).show();
+                } if(response.message().equals("Bad Request")){
+                    onSignupFailed();
+                    Toast.makeText(getBaseContext(), "Choose another username", Toast.LENGTH_LONG).show();
+                    usernameText.setError("Username already taken");
+                }
+                else{
+                    onSignupSuccess();
+                    Intent intent = new Intent(RegisterActivity.this, LogInActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
 
-                Intent intent = new Intent(RegisterActivity.this, LogInActivity.class);
-                startActivity(intent);
-                finish();
             }
 
             @Override
