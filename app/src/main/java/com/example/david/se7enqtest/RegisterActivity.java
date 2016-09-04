@@ -150,6 +150,7 @@ public class RegisterActivity extends Activity {
                 }
                 else{
                     onSignupSuccess();
+                    Toast.makeText(getBaseContext(), response.message(), Toast.LENGTH_LONG).show();
                     Intent intent = new Intent(RegisterActivity.this, LogInActivity.class);
                     startActivity(intent);
                     finish();
