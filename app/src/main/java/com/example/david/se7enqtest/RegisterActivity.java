@@ -126,13 +126,7 @@ public class RegisterActivity extends Activity {
         userRegister.setPassword(_passwordText.getText().toString());
 
 
-
-        final Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(getResources().getString(R.string.Base_URL))
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        ApiCall service = retrofit.create(ApiCall.class);
+        ApiCall service = ServiceGenerator.createService(ApiCall.class);
 
         Call<UserRegister> registerCall = service.getUserRegister(userRegister);
 

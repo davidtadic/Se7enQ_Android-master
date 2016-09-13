@@ -79,12 +79,7 @@ public class LogInActivity extends Activity {
         userLogin.setUserName(usernameText.getText().toString());
         userLogin.setPassword(_passwordText.getText().toString());
 
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(getResources().getString(R.string.Base_URL))
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        ApiCall service = retrofit.create(ApiCall.class);
+        ApiCall service = ServiceGenerator.createService(ApiCall.class);
 
         Call<UserLogin> userLoginCall = service.getUserLogin(userLogin);
 
