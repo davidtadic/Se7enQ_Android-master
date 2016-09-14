@@ -1,7 +1,10 @@
 package com.example.david.se7enqtest.apiRetrofit;
 
+import com.example.david.se7enqtest.models.TokenModel;
 import com.example.david.se7enqtest.models.UserLogin;
 import com.example.david.se7enqtest.models.UserRegister;
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -14,13 +17,12 @@ import retrofit2.http.POST;
 public interface ApiCall {
 
     @POST("User/Login/")
-    Call<UserLogin> getUserLogin(@Body UserLogin userLogin);
+    Call<TokenModel> getUserLogin(@Body UserLogin userLogin);
 
     @POST("User/Register/")
     Call<UserRegister> getUserRegister(@Body UserRegister userRegister);
 
-    @GET("User/GetHello/")
-    Call<String> getHello();
+
 
 
 }

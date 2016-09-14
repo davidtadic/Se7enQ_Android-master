@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -13,6 +12,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.david.se7enqtest.apiRetrofit.ApiCall;
+import com.example.david.se7enqtest.apiRetrofit.ServiceGenerator;
+import com.example.david.se7enqtest.models.TokenModel;
 import com.example.david.se7enqtest.models.UserLogin;
 
 import butterknife.ButterKnife;
@@ -20,8 +21,6 @@ import butterknife.InjectView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class LogInActivity extends Activity {
 
@@ -74,18 +73,20 @@ public class LogInActivity extends Activity {
         progressDialog.setMessage("Authenticating ...");
         progressDialog.show();
 
-        UserLogin userLogin = new UserLogin();
+        final UserLogin userLogin = new UserLogin();
 
         userLogin.setUserName(usernameText.getText().toString());
         userLogin.setPassword(_passwordText.getText().toString());
 
         ApiCall service = ServiceGenerator.createService(ApiCall.class);
 
-        Call<UserLogin> userLoginCall = service.getUserLogin(userLogin);
+        Call<TokenModel> userLoginCall = service.getUserLogin(userLogin);
 
-        userLoginCall.enqueue(new Callback<UserLogin>() {
+        userLoginCall.enqueue(new Callback<TokenModel>() {
+
+
             @Override
-            public void onResponse(Call<UserLogin> call, Response<UserLogin> response) {
+            public void onResponse(Call<TokenModel> call, Response<TokenModel> response) {
                 progressDialog.dismiss();
                 if(response.message().equals("Bad Request") || response.message().equals("Internal Server Error")){
                     onLoginFailed();
@@ -97,13 +98,23 @@ public class LogInActivity extends Activity {
                     Intent intent = new Intent(LogInActivity.this, MainMenuActivity.class);
                     startActivity(intent);
                     finish();
+
+                    //test
+                    String userToken = response.body().getToken();
+                    Log.i("Informacija", userToken);
+
+                    TokenModel tokenModel = new TokenModel();
+                    tokenModel.setToken(userToken);
+                    tokenModel.setUser(userLogin);
+
+
                 }
 
 
             }
 
             @Override
-            public void onFailure(Call<UserLogin> call, Throwable t) {
+            public void onFailure(Call<TokenModel> call, Throwable t) {
                 progressDialog.dismiss();
                 onLoginFailed();
                 Toast.makeText(getBaseContext(), t.getMessage(), Toast.LENGTH_LONG).show();
