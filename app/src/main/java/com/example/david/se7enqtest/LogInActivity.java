@@ -3,7 +3,9 @@ package com.example.david.se7enqtest;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -101,6 +103,15 @@ public class LogInActivity extends Activity {
 
                     //test
                     String userToken = response.body().getToken();
+
+                    SharedPreferences settings = getSharedPreferences("MY_PREF", 0);
+                    SharedPreferences.Editor editor = settings.edit();
+                    editor.putString("TOKEN", userToken);
+                    editor.commit();
+
+
+
+
                     Log.i("Informacija", userToken);
 
                     TokenModel tokenModel = new TokenModel();
