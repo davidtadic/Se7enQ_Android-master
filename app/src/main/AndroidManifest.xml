@@ -8,42 +8,37 @@
 
     <application
         android:allowBackup="true"
+        android:debuggable="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:debuggable="true"
         android:theme="@style/MyTheme">
         <activity
-            android:name=".SplashScreenAcitivity"
+            android:name=".SplashScreenMain"
             android:screenOrientation="portrait"
-            android:theme="@style/MyThemeFullscreen" >
-
+            android:theme="@style/MyThemeFullscreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
-
-
-            </activity>
+        </activity>
         <activity
             android:name=".MainMenuActivity"
-            android:screenOrientation="portrait">
-
-
-        </activity>
+            android:screenOrientation="portrait" />
         <activity android:name=".LogInActivity" />
         <activity android:name=".RegisterActivity" />
-        <activity android:name=".TrainingActivity"
-            android:screenOrientation="portrait"
-            />
+        <activity
+            android:name=".TrainingActivity"
+            android:screenOrientation="portrait" />
         <activity android:name=".Synonyms" />
         <activity android:name=".Definitions" />
         <activity android:name=".Projections" />
         <activity android:name=".Memory" />
         <activity android:name=".Array" />
-        <activity android:name=".GeneralKnowledge"></activity>
+        <activity android:name=".GeneralKnowledge" />
+        <activity android:name=".SplashScreenTraining" />
+        <activity android:name=".Calculation"></activity>
     </application>
 
 </manifest>

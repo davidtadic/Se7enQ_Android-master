@@ -90,7 +90,14 @@ public class LogInActivity extends Activity {
             @Override
             public void onResponse(Call<TokenModel> call, Response<TokenModel> response) {
                 progressDialog.dismiss();
-                if(response.message().equals("Bad Request") || response.message().equals("Internal Server Error")){
+                if(response.message().equals("Bad Request")){
+                    onLoginFailed();
+                    Toast.makeText(getBaseContext(),"Wrong username or password", Toast.LENGTH_LONG).show();
+                    usernameText.setError("check username");
+                    _passwordText.setError("check password");
+
+                }
+                else if(response.message().equals("Internal Server Error")){
                     onLoginFailed();
                     Toast.makeText(getBaseContext(), response.message(), Toast.LENGTH_LONG).show();
 
@@ -107,7 +114,10 @@ public class LogInActivity extends Activity {
                     SharedPreferences settings = getSharedPreferences("MY_PREF", 0);
                     SharedPreferences.Editor editor = settings.edit();
                     editor.putString("TOKEN", userToken);
+                    editor.putString("USERNAME", userLogin.getUserName());
                     editor.commit();
+
+
 
 
 

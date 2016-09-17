@@ -4,6 +4,10 @@ package com.example.david.se7enqtest.models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 public class WordDefinitionModel {
 
     @SerializedName("id")
@@ -81,5 +85,23 @@ public class WordDefinitionModel {
     public void setWord(String word) {
         this.word = word;
     }
+
+    public List<String> getQuestionOptions(){
+        List<String> shuffle = new ArrayList<String>();
+
+        shuffle.add(correctAnswer);
+        shuffle.add(wrongAnswer1);
+        shuffle.add(wrongAnswer2);
+        shuffle.add(wrongAnswer3);
+
+        Collections.shuffle(shuffle);
+
+        return shuffle;
+
+    }
+
+
+
+
 
 }

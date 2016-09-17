@@ -3,10 +3,9 @@ package com.example.david.se7enqtest;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Handler;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-public class SplashScreenAcitivity extends Activity {
+public class SplashScreenMain extends Activity {
     private static int SPLASH_TIME_OUT = 4000;
 
     @Override
@@ -21,7 +20,7 @@ public class SplashScreenAcitivity extends Activity {
             @Override
             public void run() {
 
-                Intent i = new Intent(SplashScreenAcitivity.this, LogInActivity.class);
+                Intent i = new Intent(SplashScreenMain.this, LogInActivity.class);
                 startActivity(i);
 
                 finish();
