@@ -9,7 +9,9 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Handler;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -95,22 +97,21 @@ public class Definitions extends Activity {
                         questionRemain.setText("Question remain: "+counter);
                         tempQuestionSet.add(wd);
                         setAnswer(wd);
+                        checkAnswer(wd);
                         startTimer();
                         break;
                     }
 
-
-
-
-
-
                 }
                 else if(response.code() == 400){
                     finish();
-                    Toast.makeText(getBaseContext(), "You have been already trained in this category today\nCome back tomorrow", Toast.LENGTH_LONG).show();
+                    Toast toast = Toast.makeText(getBaseContext(), "You have been already trained in this category today\nCome back tomorrow", Toast.LENGTH_SHORT);
+                    TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
+                    if( v != null) v.setGravity(Gravity.CENTER);
+                    toast.show();
                 }
                 else {
-                    Log.e("Greska, Definicije!", response.message());
+                    Log.e("Error, Definitions!", response.message());
                 }
 
             }
@@ -126,9 +127,6 @@ public class Definitions extends Activity {
 
 
     }
-
-
-
 
 
     public void setAnswer(WordDefinitionModel wd){
@@ -154,14 +152,18 @@ public class Definitions extends Activity {
             @Override
             public void onFinish() {
                 counter--;
-                questionRemain.setText("Question remain: "+counter);
+                questionRemain.setText("Questions remain: "+counter);
                 final WordDefinitionModel wd = getQuestionSet();
                 if(wd == null){
                     timer.cancel();
 
-                    AlertDialog.Builder alertDialog = new AlertDialog.Builder(Definitions.this);
+                    //info dialog
+                    AlertDialog.Builder builder = new AlertDialog.Builder(Definitions.this);
+                    TextView myMsg = new TextView(Definitions.this);
+                    myMsg.setText("You have been trained in this category for today\nSee you tomorrow");
+                    myMsg.setGravity(Gravity.CENTER_HORIZONTAL);
 
-                    alertDialog.setMessage("You have been trained in this category for today\nSee you tomorrow").setCancelable(false)
+                    builder.setCancelable(false)
                             .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
@@ -169,86 +171,18 @@ public class Definitions extends Activity {
                                     finish();
 
                                 }
-                            });
+                            }).setView(myMsg);
 
-                    AlertDialog alert = alertDialog.create();
-                    alert.show();
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+
                 }
                 else{
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             setAnswer(wd);
-                            final String correct = wd.getCorrectAnswer();
-
-                            answer1.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    if(answer1.getText().toString().equals(correct)){
-                                        answer1.setBackgroundColor(Color.GREEN);
-                                        answer1.setTextColor(Color.BLACK);
-                                    }else{
-                                        answer1.setBackgroundColor(Color.RED);
-                                        answer1.setTextColor(Color.BLACK);
-                                    }
-                                    onFinish();
-
-                                }
-                            });
-
-                            answer2.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    if(answer2.getText().toString().equals(correct)){
-                                        answer2.setBackgroundColor(Color.GREEN);
-                                        answer2.setTextColor(Color.BLACK);
-
-                                    }else{
-                                        answer2.setBackgroundColor(Color.RED);
-                                        answer2.setTextColor(Color.BLACK);
-                                    }
-                                    onFinish();
-
-
-                                }
-                            });
-                            answer3.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    if(answer3.getText().toString().equals(correct)){
-                                        answer3.setBackgroundColor(Color.GREEN);
-                                        answer3.setTextColor(Color.BLACK);
-
-                                    }else{
-                                        answer3.setBackgroundColor(Color.RED);
-                                        answer3.setTextColor(Color.BLACK);
-                                    }
-                                    onFinish();
-
-
-                                }
-                            });
-                            answer4.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    if(answer4.getText().toString().equals(correct)){
-                                        answer4.setBackgroundColor(Color.GREEN);
-                                        answer4.setTextColor(Color.BLACK);
-
-                                    }else{
-                                        answer4.setBackgroundColor(Color.RED);
-                                        answer4.setTextColor(Color.BLACK);
-                                    }
-                                    onFinish();
-
-
-                                }
-                            });
-
-
-
-
-
+                            checkAnswer(wd);
                         }
                     });
                     timer.start();
@@ -258,8 +192,6 @@ public class Definitions extends Activity {
         }.start();
 
     }
-
-
 
     private WordDefinitionModel getQuestionSet(){
         WordDefinitionModel newQuestion = null;
@@ -275,41 +207,112 @@ public class Definitions extends Activity {
         return newQuestion;
     }
 
-    public boolean checkAnswer(View v, WordDefinitionModel wd){
-        Button b = (Button)v;
+    public void checkAnswer(WordDefinitionModel wd){
+
+        final String correct = wd.getCorrectAnswer();
+
+        answer1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(answer1.getText().toString().equals(correct)){
+                    answer1.setBackgroundColor(Color.GREEN);
+                    answer1.setTextColor(Color.BLACK);
+                }else{
+                    answer1.setBackgroundColor(Color.RED);
+                    answer1.setTextColor(Color.BLACK);
+                }
+
+                new Handler().postDelayed(new Runnable() {
+
+                    public void run() {
+                        answer1.setTextColor(Color.BLACK);
+                        answer1.setBackgroundColor(Color.parseColor("#979292"));
+                    }
+                }, 500);
+
+                timer.onFinish();
+
+            }
+        });
+
+        answer2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(answer2.getText().toString().equals(correct)){
+                    answer2.setBackgroundColor(Color.GREEN);
+                    answer2.setTextColor(Color.BLACK);
+
+                }else{
+                    answer2.setBackgroundColor(Color.RED);
+                    answer2.setTextColor(Color.BLACK);
+                }
+
+                new Handler().postDelayed(new Runnable() {
+
+                    public void run() {
+                        answer2.setTextColor(Color.BLACK);
+                        answer2.setBackgroundColor(Color.parseColor("#979292"));
+                    }
+                }, 500);
 
 
-        String answer = b.getText().toString();
-        if(wd.getCorrectAnswer().equals(answer)){
-            b.setBackgroundColor(Color.GREEN);
-            b.setTextColor(Color.BLACK);
-            return true;
-        }
-        else{
-            b.setBackgroundColor(Color.RED);
-            b.setTextColor(Color.BLACK);
+                timer.onFinish();
 
-            if(answer1.getText().toString().equals(wd.getCorrectAnswer())){
-                answer1.setBackgroundColor(Color.GREEN);
-                answer1.setTextColor(Color.BLACK);
-            }
-            else if(answer2.getText().toString().equals(wd.getCorrectAnswer())){
-                answer2.setBackgroundColor(Color.GREEN);
-                answer2.setTextColor(Color.BLACK);
-            }
-            else if(answer3.getText().toString().equals(wd.getCorrectAnswer())){
-                answer3.setBackgroundColor(Color.GREEN);
-                answer3.setTextColor(Color.BLACK);
-            }
-            else if(answer4.getText().toString().equals(wd.getCorrectAnswer())){
-                answer4.setBackgroundColor(Color.GREEN);
-                answer4.setTextColor(Color.BLACK);
-            }
-            return false;
-        }
 
+            }
+        });
+        answer3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(answer3.getText().toString().equals(correct)){
+                    answer3.setBackgroundColor(Color.GREEN);
+                    answer3.setTextColor(Color.BLACK);
+
+                }else{
+                    answer3.setBackgroundColor(Color.RED);
+                    answer3.setTextColor(Color.BLACK);
+                }
+
+                new Handler().postDelayed(new Runnable() {
+
+                    public void run() {
+                        answer3.setTextColor(Color.BLACK);
+                        answer3.setBackgroundColor(Color.parseColor("#979292"));
+                    }
+                }, 500);
+
+
+                timer.onFinish();
+
+
+            }
+        });
+        answer4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(answer4.getText().toString().equals(correct)){
+                    answer4.setBackgroundColor(Color.GREEN);
+                    answer4.setTextColor(Color.BLACK);
+
+                }else{
+                    answer4.setBackgroundColor(Color.RED);
+                    answer4.setTextColor(Color.BLACK);
+                }
+
+                new Handler().postDelayed(new Runnable() {
+
+                    public void run() {
+                        answer4.setTextColor(Color.BLACK);
+                        answer4.setBackgroundColor(Color.parseColor("#979292"));
+                    }
+                }, 500);
+
+                timer.onFinish();
+
+
+            }
+        });
 
     }
-
 
 }
