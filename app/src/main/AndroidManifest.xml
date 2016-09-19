@@ -38,7 +38,9 @@
         <activity android:name=".Array" />
         <activity android:name=".GeneralKnowledge" />
         <activity android:name=".SplashScreenTraining" />
-        <activity android:name=".Calculation"></activity>
+        <activity android:name=".Calculation" />
+        <activity android:name=".SplashScreenPlay" />
+        <activity android:name=".PlayActivity"></activity>
     </application>
 
 </manifest>

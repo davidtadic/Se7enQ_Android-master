@@ -28,6 +28,7 @@ public class MainMenuActivity extends Activity {
 
         userName = (TextView)findViewById(R.id.userName);
         logout = (TextView)findViewById(R.id.logOut);
+        play = (Button)findViewById(R.id.MainMenuPlayButton);
 
         SharedPreferences preferences = getSharedPreferences("MY_PREF", 0);
         String userNameString = preferences.getString("USERNAME", "");
@@ -40,6 +41,13 @@ public class MainMenuActivity extends Activity {
             public void onClick(View v) {
                 startActivity(new Intent(MainMenuActivity.this, LogInActivity.class));
                 finish();
+            }
+        });
+
+        play.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainMenuActivity.this, SplashScreenPlay.class));
             }
         });
 

@@ -30,7 +30,8 @@ public interface ApiCall {
     @GET("training/GetWordDefinitions")
     Call<List<WordDefinitionModel>> getWordDefinitions();
 
-
+    @POST("Game/FindOpponent")
+    Call<UserRegister> findOpponent();
 
 
 
