@@ -2,7 +2,6 @@ package com.example.david.se7enqtest;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 
@@ -29,19 +28,19 @@ public class SplashScreenTraining extends Activity {
 
                 switch (intValue){
                     case R.id.synonymsButton:
-                        startActivity(new Intent(SplashScreenTraining.this, Synonyms.class));
+                        startActivity(new Intent(SplashScreenTraining.this, SynonymsActivity.class));
                     break;
                     case R.id.definitionsButton:
-                        startActivity(new Intent(SplashScreenTraining.this, Definitions.class));
+                        startActivity(new Intent(SplashScreenTraining.this, DefinitionsAcitivity.class));
                         break;
                     case R.id.arrayButton:
-                        startActivity(new Intent(SplashScreenTraining.this, Array.class));
+                        startActivity(new Intent(SplashScreenTraining.this, ArrayActivity.class));
                         break;
                     case R.id.calculationsButton:
-                        startActivity(new Intent(SplashScreenTraining.this, Calculation.class));
+                        startActivity(new Intent(SplashScreenTraining.this, CalculationActivity.class));
                         break;
                     case R.id.knowledgeButton:
-                        startActivity(new Intent(SplashScreenTraining.this, GeneralKnowledge.class));
+                        startActivity(new Intent(SplashScreenTraining.this, GeneralKnowledgeActivity.class));
                         break;
                 }
 

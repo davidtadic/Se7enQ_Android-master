@@ -3,7 +3,7 @@ package com.example.david.se7enqtest;
 import android.app.Activity;
 import android.os.Bundle;
 
-public class GeneralKnowledge extends Activity {
+public class GeneralKnowledgeActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

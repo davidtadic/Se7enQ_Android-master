@@ -31,16 +31,26 @@
         <activity
             android:name=".TrainingActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".Synonyms" />
-        <activity android:name=".Definitions" />
-        <activity android:name=".Projections" />
-        <activity android:name=".Memory" />
-        <activity android:name=".Array" />
-        <activity android:name=".GeneralKnowledge" />
+        <activity android:name=".SynonymsActivity" />
+        <activity android:name=".DefinitionsAcitivity" />
+        <activity android:name=".ProjectionActivity" />
+        <activity android:name=".MemoryActivity" />
+        <activity android:name=".ArrayActivity" />
+        <activity android:name=".GeneralKnowledgeActivity" />
         <activity android:name=".SplashScreenTraining" />
-        <activity android:name=".Calculation" />
+        <activity android:name=".CalculationActivity" />
         <activity android:name=".SplashScreenPlay" />
-        <activity android:name=".PlayActivity"></activity>
+        <activity android:name=".OpponentPlayActivity" />
+        <activity android:name=".SplashScreenSynonyms" />
+        <activity android:name=".SplashScreenDefinitions" />
+        <activity android:name=".SplashScreenArray" />
+        <activity android:name=".SplashScreenCalculation" />
+        <activity android:name=".SplashScreenKnowledge" />
+        <activity android:name=".PlaySynonymsActivity" />
+        <activity android:name=".PlayDefinitionsActivity" />
+        <activity android:name=".PlayArrayActivity" />
+        <activity android:name=".PlayCalculationActivity" />
+        <activity android:name=".PlayKnowledgeActivity"></activity>
     </application>
 
 </manifest>

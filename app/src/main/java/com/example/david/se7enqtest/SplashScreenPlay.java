@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.Gravity;
 import android.widget.ProgressBar;
@@ -66,12 +65,12 @@ public class SplashScreenPlay extends Activity {
                         UserRegister user = response.body();
 
                         //name of opponent
-                        SharedPreferences settings = getSharedPreferences("MY_PREF", 0);
+                        SharedPreferences settings = getSharedPreferences("MY_PREF_NAME", 0);
                         SharedPreferences.Editor editor = settings.edit();
                         editor.putString("FIRST_NAME", user.getFirstName());
                         editor.commit();
 
-                        startActivity(new Intent(SplashScreenPlay.this, PlayActivity.class));
+                        startActivity(new Intent(SplashScreenPlay.this, OpponentPlayActivity.class));
                         finish();
 
 

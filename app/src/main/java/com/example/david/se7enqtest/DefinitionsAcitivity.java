@@ -2,7 +2,6 @@ package com.example.david.se7enqtest;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -19,20 +18,16 @@ import android.widget.Toast;
 
 import com.example.david.se7enqtest.apiRetrofit.ApiCall;
 import com.example.david.se7enqtest.apiRetrofit.ServiceGenerator;
-import com.example.david.se7enqtest.models.TokenModel;
-import com.example.david.se7enqtest.models.WordDefinitionModel;
-
-import org.w3c.dom.Text;
+import com.example.david.se7enqtest.models.DefinitionModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.InjectView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class Definitions extends Activity {
+public class DefinitionsAcitivity extends Activity {
 
     TextView questionRemain;
     TextView countdown;
@@ -41,11 +36,11 @@ public class Definitions extends Activity {
     Button answer2;
     Button answer3;
     Button answer4;
-    WordDefinitionModel wordDefinitionModel;
+    DefinitionModel definitionModel;
     CountDownTimer timer;
     int counter = 20;
-    ArrayList<WordDefinitionModel> arrayDefinition = new ArrayList<>(20);
-    ArrayList<WordDefinitionModel> tempQuestionSet = new ArrayList<>(20);
+    ArrayList<DefinitionModel> arrayDefinition = new ArrayList<>(20);
+    ArrayList<DefinitionModel> tempQuestionSet = new ArrayList<>(20);
 
 
 
@@ -70,30 +65,30 @@ public class Definitions extends Activity {
 
         ApiCall service = ServiceGenerator.createServiceAuthorization(ApiCall.class, userToken);
 
-        Call<List<WordDefinitionModel>>  wordDefinitionsCall = service.getWordDefinitions();
+        Call<List<DefinitionModel>>  wordDefinitionsCall = service.getWordDefinitions();
 
-        wordDefinitionsCall.enqueue(new Callback<List<WordDefinitionModel>>() {
+        wordDefinitionsCall.enqueue(new Callback<List<DefinitionModel>>() {
             @Override
-            public void onResponse(Call<List<WordDefinitionModel>> call, Response<List<WordDefinitionModel>> response) {
+            public void onResponse(Call<List<DefinitionModel>> call, Response<List<DefinitionModel>> response) {
                 Log.i("Definicije Response", response.code()+" , "+response.message());
 
                 if(response.code() == 200){
 
                     for(int i=0; i < 20; i++){
-                        wordDefinitionModel = new WordDefinitionModel();
+                        definitionModel = new DefinitionModel();
 
-                        wordDefinitionModel.setId(response.body().get(i).getId());
-                        wordDefinitionModel.setCorrectAnswer(response.body().get(i).getCorrectAnswer());
-                        wordDefinitionModel.setWrongAnswer1(response.body().get(i).getWrongAnswer1());
-                        wordDefinitionModel.setWrongAnswer2(response.body().get(i).getWrongAnswer2());
-                        wordDefinitionModel.setWrongAnswer3(response.body().get(i).getWrongAnswer3());
-                        wordDefinitionModel.setWord(response.body().get(i).getWord());
+                        definitionModel.setId(response.body().get(i).getId());
+                        definitionModel.setCorrectAnswer(response.body().get(i).getCorrectAnswer());
+                        definitionModel.setWrongAnswer1(response.body().get(i).getWrongAnswer1());
+                        definitionModel.setWrongAnswer2(response.body().get(i).getWrongAnswer2());
+                        definitionModel.setWrongAnswer3(response.body().get(i).getWrongAnswer3());
+                        definitionModel.setWord(response.body().get(i).getWord());
 
-                        arrayDefinition.add(wordDefinitionModel);
+                        arrayDefinition.add(definitionModel);
                     }
 
 
-                    for(WordDefinitionModel wd:arrayDefinition){
+                    for(DefinitionModel wd:arrayDefinition){
                         questionRemain.setText("Question remain: "+counter);
                         tempQuestionSet.add(wd);
                         setAnswer(wd);
@@ -117,7 +112,7 @@ public class Definitions extends Activity {
             }
 
             @Override
-            public void onFailure(Call<List<WordDefinitionModel>> call, Throwable t) {
+            public void onFailure(Call<List<DefinitionModel>> call, Throwable t) {
                 Log.e("DefinicijeFailure", t.getMessage());
                 Toast.makeText(getBaseContext(), "Attempt failed, try again", Toast.LENGTH_LONG).show();
             }
@@ -129,7 +124,7 @@ public class Definitions extends Activity {
     }
 
 
-    public void setAnswer(WordDefinitionModel wd){
+    public void setAnswer(DefinitionModel wd){
         //mix answers
         List<String> answers = wd.getQuestionOptions();
 
@@ -153,13 +148,13 @@ public class Definitions extends Activity {
             public void onFinish() {
                 counter--;
                 questionRemain.setText("Questions remain: "+counter);
-                final WordDefinitionModel wd = getQuestionSet();
+                final DefinitionModel wd = getQuestionSet();
                 if(wd == null){
                     timer.cancel();
 
                     //info dialog
-                    AlertDialog.Builder builder = new AlertDialog.Builder(Definitions.this);
-                    TextView myMsg = new TextView(Definitions.this);
+                    AlertDialog.Builder builder = new AlertDialog.Builder(DefinitionsAcitivity.this);
+                    TextView myMsg = new TextView(DefinitionsAcitivity.this);
                     myMsg.setText("You have been trained in this category for today\nSee you tomorrow");
                     myMsg.setGravity(Gravity.CENTER_HORIZONTAL);
 
@@ -167,7 +162,7 @@ public class Definitions extends Activity {
                             .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    startActivity(new Intent(Definitions.this, TrainingActivity.class));
+                                    startActivity(new Intent(DefinitionsAcitivity.this, TrainingActivity.class));
                                     finish();
 
                                 }
@@ -193,9 +188,9 @@ public class Definitions extends Activity {
 
     }
 
-    private WordDefinitionModel getQuestionSet(){
-        WordDefinitionModel newQuestion = null;
-        for (final WordDefinitionModel wd : arrayDefinition) {
+    private DefinitionModel getQuestionSet(){
+        DefinitionModel newQuestion = null;
+        for (final DefinitionModel wd : arrayDefinition) {
             if(tempQuestionSet.contains(wd)){
             }
             else{
@@ -207,7 +202,7 @@ public class Definitions extends Activity {
         return newQuestion;
     }
 
-    public void checkAnswer(WordDefinitionModel wd){
+    public void checkAnswer(DefinitionModel wd){
 
         final String correct = wd.getCorrectAnswer();
 
@@ -228,7 +223,7 @@ public class Definitions extends Activity {
                         answer1.setTextColor(Color.BLACK);
                         answer1.setBackgroundColor(Color.parseColor("#979292"));
                     }
-                }, 500);
+                }, 300);
 
                 timer.onFinish();
 
@@ -253,7 +248,7 @@ public class Definitions extends Activity {
                         answer2.setTextColor(Color.BLACK);
                         answer2.setBackgroundColor(Color.parseColor("#979292"));
                     }
-                }, 500);
+                }, 300);
 
 
                 timer.onFinish();
@@ -279,7 +274,7 @@ public class Definitions extends Activity {
                         answer3.setTextColor(Color.BLACK);
                         answer3.setBackgroundColor(Color.parseColor("#979292"));
                     }
-                }, 500);
+                }, 300);
 
 
                 timer.onFinish();
@@ -305,7 +300,7 @@ public class Definitions extends Activity {
                         answer4.setTextColor(Color.BLACK);
                         answer4.setBackgroundColor(Color.parseColor("#979292"));
                     }
-                }, 500);
+                }, 300);
 
                 timer.onFinish();
 
