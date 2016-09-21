@@ -39,7 +39,7 @@ public class PlaySynonymsActivity extends Activity{
     int questionIndex = 0;
     CountDownTimer timer;
     ApiCall service;
-    String userAnswer;
+    String userAnswer = "first second";
     AnswerModel answerModel1;
     boolean correct;
     int counterButtons;
@@ -111,9 +111,16 @@ public class PlaySynonymsActivity extends Activity{
 
             @Override
             public void onFinish() {
+                returnColor();
                 questionIndex++;
                 final AnswerModel answerModel = getAnswerModel(questionIndex);
-                if(questionIndex == 4){
+                if(questionIndex == 4) {
+                    SharedPreferences settingsAnswer = getSharedPreferences("ANSWER_MODEL",0);
+                    SharedPreferences.Editor editorAnswer = settingsAnswer.edit();
+                    editorAnswer.putBoolean("ANSWER_CORRECT", correct);
+                    editorAnswer.putString("ANSWER", userAnswer);
+                    editorAnswer.commit();
+
                     timer.cancel();
                     startActivity(new Intent(PlaySynonymsActivity.this, SplashScreenDefinitions.class));
                     finish();
@@ -122,7 +129,9 @@ public class PlaySynonymsActivity extends Activity{
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            getQuestion(answerModel);
+
+                                    getQuestion(answerModel);
+
                         }
                     });
                     timer.start();
@@ -157,7 +166,7 @@ public class PlaySynonymsActivity extends Activity{
                 if(response.body().toString() != null) {
                     Log.e("Response sinonim", response.body().toString());
                 }
-                    setDisabledButtons();
+
 
                     final SynonymsModel synonymQuestion = response.body().getQuestion();
                     final int opponentPoints = response.body().getOpponentPoints();
@@ -166,30 +175,31 @@ public class PlaySynonymsActivity extends Activity{
                     final String opponentAnswer1 = opponentAnswer.split(" ")[0];
                     final String opponentAnswer2 = opponentAnswer.split(" ")[1];
 
-                    new Handler().postDelayed(new Runnable() {
+                    setEnabledButtons();
+                    setAnswer(synonymQuestion);
+                    opponentScore.setText("Opponent\n score: "+String.valueOf(opponentPoints));
+                    checkAnswer(synonymQuestion);
+                    if(checkAnswer(synonymQuestion)){
+                        myPoints += 1;
+                        score.setText("Score: "+String.valueOf(myPoints));
+                    }
+                    /*new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            setEnabledButtons();
-                            setAnswer(synonymQuestion);
-                            opponentScore.setText("Opponent\n score: "+String.valueOf(opponentPoints));
-                            checkAnswer(synonymQuestion);
-                            if(checkAnswer(synonymQuestion)){
-                                myPoints += 1;
-                                score.setText("Score: "+String.valueOf(myPoints));
-                            }
+
 
                         }
-                    },2000);
+                    },2000);*/
 
 
+                    //showOpponentsAnswer(opponentAnswer1,opponentAnswer2);
 
 
-                    new Handler().postDelayed(new Runnable() {
+                    /*new Handler().postDelayed(new Runnable() {
 
                         public void run() {
-                            showOpponentsAnswer(opponentAnswer1,opponentAnswer2);
                         }
-                    }, 200);
+                    }, 200);*/
 
 
                 }
@@ -206,10 +216,10 @@ public class PlaySynonymsActivity extends Activity{
                 if(t.getMessage() != null) {
                     Log.e("Sinonimi", t.getMessage());
                 }
+                finish();
 
                 Toast.makeText(getBaseContext(), "Sorry, but there is an error!", Toast.LENGTH_LONG).show();
                 startActivity(new Intent(PlaySynonymsActivity.this, MainMenuActivity.class));
-                finish();
             }
         });
 
@@ -249,13 +259,14 @@ public class PlaySynonymsActivity extends Activity{
                 }
                 userAnswer = answer1.getText().toString()+" second";
 
-                new Handler().postDelayed(new Runnable() {
+
+                /*new Handler().postDelayed(new Runnable() {
 
                     public void run() {
                         answer1.setTextColor(Color.BLACK);
                         answer1.setBackgroundColor(Color.parseColor("#979292"));
                     }
-                }, 300);
+                }, 300);*/
             }
         });
 
@@ -285,13 +296,13 @@ public class PlaySynonymsActivity extends Activity{
                 userAnswer = answer2.getText().toString()+" second";
 
 
-                new Handler().postDelayed(new Runnable() {
+                /*new Handler().postDelayed(new Runnable() {
 
                     public void run() {
                         answer2.setTextColor(Color.BLACK);
                         answer2.setBackgroundColor(Color.parseColor("#979292"));
                     }
-                }, 300);
+                }, 300);*/
             }
         });
 
@@ -320,13 +331,13 @@ public class PlaySynonymsActivity extends Activity{
                 }
                 userAnswer = answer3.getText().toString()+" second";
 
-                new Handler().postDelayed(new Runnable() {
+                /*new Handler().postDelayed(new Runnable() {
 
                     public void run() {
                         answer3.setTextColor(Color.BLACK);
                         answer3.setBackgroundColor(Color.parseColor("#979292"));
                     }
-                }, 300);
+                }, 300);*/
             }
         });
 
@@ -355,13 +366,13 @@ public class PlaySynonymsActivity extends Activity{
                 }
                 userAnswer = answer4.getText().toString()+" second";
 
-                new Handler().postDelayed(new Runnable() {
+                /*new Handler().postDelayed(new Runnable() {
 
                     public void run() {
                         answer4.setTextColor(Color.BLACK);
                         answer4.setBackgroundColor(Color.parseColor("#979292"));
                     }
-                }, 300);
+                }, 300);*/
             }
         });
 
@@ -374,49 +385,49 @@ public class PlaySynonymsActivity extends Activity{
             answer1.setBackgroundColor(Color.YELLOW);
             answer1.setTextColor(Color.BLACK);
 
-            new Handler().postDelayed(new Runnable() {
+            /*new Handler().postDelayed(new Runnable() {
 
                 public void run() {
                     answer4.setTextColor(Color.BLACK);
                     answer4.setBackgroundColor(Color.parseColor("#979292"));
                 }
-            }, 200);
+            }, 200);*/
         }
         else if(answer2.getText().toString().equals(opponentAnswer1) || answer2.getText().toString().equals(opponentAnswer2)){
             answer2.setBackgroundColor(Color.YELLOW);
             answer2.setTextColor(Color.BLACK);
 
-            new Handler().postDelayed(new Runnable() {
+            /*new Handler().postDelayed(new Runnable() {
 
                 public void run() {
                     answer4.setTextColor(Color.BLACK);
                     answer4.setBackgroundColor(Color.parseColor("#979292"));
                 }
-            }, 200);
+            }, 200);*/
         }
         else if(answer3.getText().toString().equals(opponentAnswer1) || answer3.getText().toString().equals(opponentAnswer2)){
             answer2.setBackgroundColor(Color.YELLOW);
             answer2.setTextColor(Color.BLACK);
 
-            new Handler().postDelayed(new Runnable() {
+            /*new Handler().postDelayed(new Runnable() {
 
                 public void run() {
                     answer4.setTextColor(Color.BLACK);
                     answer4.setBackgroundColor(Color.parseColor("#979292"));
                 }
-            }, 200);
+            }, 200);*/
         }
         else if(answer4.getText().toString().equals(opponentAnswer1) || answer4.getText().toString().equals(opponentAnswer2)){
             answer2.setBackgroundColor(Color.YELLOW);
             answer2.setTextColor(Color.BLACK);
 
-            new Handler().postDelayed(new Runnable() {
+            /*new Handler().postDelayed(new Runnable() {
 
                 public void run() {
                     answer4.setTextColor(Color.BLACK);
                     answer4.setBackgroundColor(Color.parseColor("#979292"));
                 }
-            }, 200);
+            }, 200);*/
         }
 
     }
@@ -433,6 +444,17 @@ public class PlaySynonymsActivity extends Activity{
         answer2.setEnabled(false);
         answer3.setEnabled(false);
         answer4.setEnabled(false);
+    }
+
+    private void returnColor(){
+        answer1.setTextColor(Color.BLACK);
+        answer1.setBackgroundColor(Color.parseColor("#979292"));
+        answer2.setTextColor(Color.BLACK);
+        answer2.setBackgroundColor(Color.parseColor("#979292"));
+        answer3.setTextColor(Color.BLACK);
+        answer3.setBackgroundColor(Color.parseColor("#979292"));
+        answer4.setTextColor(Color.BLACK);
+        answer4.setBackgroundColor(Color.parseColor("#979292"));
     }
 
 

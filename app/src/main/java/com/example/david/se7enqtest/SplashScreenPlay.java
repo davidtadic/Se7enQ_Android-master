@@ -58,7 +58,10 @@ public class SplashScreenPlay extends Activity {
             findOpponentCall.enqueue(new Callback<UserRegister>() {
                 @Override
                 public void onResponse(Call<UserRegister> call, Response<UserRegister> response) {
-                    Log.i("Play response", response.message()+" "+response.code()+" "+response.body().toString());
+
+                    if(response.body() != null) {
+                        Log.i("Play response", response.message() + " " + response.code() + " " + response.body().toString());
+                    }
 
                     if(response.isSuccessful()) {
 
@@ -84,8 +87,9 @@ public class SplashScreenPlay extends Activity {
 
                 @Override
                 public void onFailure(Call<UserRegister> call, Throwable t) {
-
-                    Log.i("Play failure", t.getMessage());
+                    if(t.getMessage() != null) {
+                        Log.i("Play failure", t.getMessage());
+                    }
 
                     if(t.getMessage().equals("timeout")){
                         AlertDialog.Builder builder = new AlertDialog.Builder(SplashScreenPlay.this);

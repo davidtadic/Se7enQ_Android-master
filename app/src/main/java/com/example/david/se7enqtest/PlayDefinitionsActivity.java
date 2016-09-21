@@ -41,7 +41,7 @@ public class PlayDefinitionsActivity extends Activity {
     int questionIndex = 4;
     CountDownTimer timer;
     ApiCall service;
-    String userAnswer;
+    String userAnswer = "pera";
     AnswerModel answerModel1;
     boolean correct;
 
@@ -59,14 +59,21 @@ public class PlayDefinitionsActivity extends Activity {
         answer3 = (Button)findViewById(R.id.answer3Definiton);
         answer4 = (Button)findViewById(R.id.answer4Definiton);
 
-        answerModel1 = new AnswerModel();
-        answerModel1.setAnswer("first");
-        answerModel1.setCorrect(false);
-        answerModel1.setQuestionIndex(4);
+
 
         //getting token out of shared preference
         SharedPreferences settings = getSharedPreferences("MY_PREF",0);
         final String userToken = settings.getString("TOKEN","");
+
+        //getting answer model from synonyms
+        SharedPreferences settingsAnswer = getSharedPreferences("ANSWER_MODEL",0);
+        boolean correctFirst = settingsAnswer.getBoolean("ANSWER_CORRECT",false);
+        String answerFirst = settingsAnswer.getString("ANSWER","");
+
+        answerModel1 = new AnswerModel();
+        answerModel1.setAnswer(answerFirst);
+        answerModel1.setCorrect(correctFirst);
+        answerModel1.setQuestionIndex(4);
 
         //making a service
         service = ServiceGenerator.createServiceAuthorization(ApiCall.class, userToken);
@@ -116,6 +123,7 @@ public class PlayDefinitionsActivity extends Activity {
                         @Override
                         public void run() {
                             getQuestion(answerModel);
+
                         }
                     });
                     timer.start();
@@ -131,6 +139,7 @@ public class PlayDefinitionsActivity extends Activity {
         //mix answers
         List<String> answers = definitionQuestion.getQuestionOptions();
 
+        wordDefinition.setText(definitionQuestion.getWord());
         answer1.setText(answers.get(0));
         answer2.setText(answers.get(1));
         answer3.setText(answers.get(2));
@@ -152,16 +161,13 @@ public class PlayDefinitionsActivity extends Activity {
                     if(response.body().toString() != null) {
                         Log.e("Response definicija", response.body().toString());
                     }
-                    setDisabledButtons();
-
+                    returnColor();
                     final DefinitionModel definitionQuestion = response.body().getQuestion();
                     final int opponentPoints = response.body().getOpponentPoints();
                     final String opponentAnswer = response.body().getOpponentAnswer();
 
 
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
+
                             setEnabledButtons();
                             setAnswer(definitionQuestion);
                             opponentScore.setText("Opponent\n score: "+String.valueOf(opponentPoints));
@@ -171,18 +177,14 @@ public class PlayDefinitionsActivity extends Activity {
                                 score.setText("Score: "+String.valueOf(myPoints));
                             }
 
-                        }
-                    },2000);
 
 
 
 
-                    new Handler().postDelayed(new Runnable() {
 
-                        public void run() {
-                            showOpponentsAnswer(opponentAnswer);
-                        }
-                    }, 200);
+
+                            //showOpponentsAnswer(opponentAnswer);
+
 
 
                 }
@@ -228,13 +230,13 @@ public class PlayDefinitionsActivity extends Activity {
                     correct = false;
                 }
 
-                new Handler().postDelayed(new Runnable() {
+                /*new Handler().postDelayed(new Runnable() {
 
                     public void run() {
                         answer1.setTextColor(Color.BLACK);
                         answer1.setBackgroundColor(Color.parseColor("#979292"));
                     }
-                }, 300);
+                }, 300);*/
 
                 userAnswer = answer1.getText().toString();
             }
@@ -256,13 +258,13 @@ public class PlayDefinitionsActivity extends Activity {
                     correct = false;
                 }
 
-                new Handler().postDelayed(new Runnable() {
+                /*new Handler().postDelayed(new Runnable() {
 
                     public void run() {
                         answer2.setTextColor(Color.BLACK);
                         answer2.setBackgroundColor(Color.parseColor("#979292"));
                     }
-                }, 300);
+                }, 300);*/
 
                 userAnswer = answer2.getText().toString();
 
@@ -283,13 +285,13 @@ public class PlayDefinitionsActivity extends Activity {
                     correct = false;
                 }
 
-                new Handler().postDelayed(new Runnable() {
+                /*new Handler().postDelayed(new Runnable() {
 
                     public void run() {
                         answer3.setTextColor(Color.BLACK);
                         answer3.setBackgroundColor(Color.parseColor("#979292"));
                     }
-                }, 300);
+                }, 300);*/
 
                 userAnswer = answer3.getText().toString();
 
@@ -310,13 +312,13 @@ public class PlayDefinitionsActivity extends Activity {
                     correct = false;
                 }
 
-                new Handler().postDelayed(new Runnable() {
+                /*new Handler().postDelayed(new Runnable() {
 
                     public void run() {
                         answer4.setTextColor(Color.BLACK);
                         answer4.setBackgroundColor(Color.parseColor("#979292"));
                     }
-                }, 300);
+                }, 300);*/
 
                 userAnswer = answer4.getText().toString();
             }
@@ -390,5 +392,16 @@ public class PlayDefinitionsActivity extends Activity {
         answer2.setEnabled(false);
         answer3.setEnabled(false);
         answer4.setEnabled(false);
+    }
+
+    private void returnColor(){
+        answer1.setTextColor(Color.BLACK);
+        answer1.setBackgroundColor(Color.parseColor("#979292"));
+        answer2.setTextColor(Color.BLACK);
+        answer2.setBackgroundColor(Color.parseColor("#979292"));
+        answer3.setTextColor(Color.BLACK);
+        answer3.setBackgroundColor(Color.parseColor("#979292"));
+        answer4.setTextColor(Color.BLACK);
+        answer4.setBackgroundColor(Color.parseColor("#979292"));
     }
 }
