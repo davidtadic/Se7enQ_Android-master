@@ -16,7 +16,7 @@ import android.widget.Toast;
 import com.example.david.se7enqtest.apiRetrofit.ApiCall;
 import com.example.david.se7enqtest.apiRetrofit.ServiceGenerator;
 import com.example.david.se7enqtest.models.AnswerModel;
-import com.example.david.se7enqtest.models.ReceiveQuestionModel;
+import com.example.david.se7enqtest.models.ReceiveQuestionSynonymModel;
 import com.example.david.se7enqtest.models.SynonymsModel;
 
 import java.util.List;
@@ -25,7 +25,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class PlaySynonymsActivity extends Activity implements View.OnClickListener{
+public class PlaySynonymsActivity extends Activity{
 
     TextView score;
     TextView countdown;
@@ -35,15 +35,14 @@ public class PlaySynonymsActivity extends Activity implements View.OnClickListen
     Button answer2;
     Button answer3;
     Button answer4;
-    static int opponentPoints;
-    static int points = 0;
-    static int currentQuestionIndex = 0;
+    static int myPoints = 0;
+    int questionIndex = 0;
     CountDownTimer timer;
     ApiCall service;
-    SharedPreferences settingsOpponent;
     String userAnswer;
     AnswerModel answerModel1;
-    boolean correct = false;
+    boolean correct;
+    int counterButtons;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,15 +58,12 @@ public class PlaySynonymsActivity extends Activity implements View.OnClickListen
         answer3 = (Button)findViewById(R.id.answer3Synonyms);
         answer4 = (Button)findViewById(R.id.answer4Synonyms);
 
-        answer1.setOnClickListener(this);
-        answer2.setOnClickListener(this);
-        answer3.setOnClickListener(this);
-        answer4.setOnClickListener(this);
+
 
         answerModel1 = new AnswerModel();
-        answerModel1.setAnswer("first");
+        answerModel1.setAnswer("first second");
         answerModel1.setCorrect(false);
-        answerModel1.setCurrentQuestonIndex(0);
+        answerModel1.setQuestionIndex(0);
 
 
         //getting token out of shared preference
@@ -78,62 +74,35 @@ public class PlaySynonymsActivity extends Activity implements View.OnClickListen
         service = ServiceGenerator.createServiceAuthorization(ApiCall.class, userToken);
 
 
-
+        //start quiz
         getQuestion(answerModel1);
         startQuestion();
 
 
 
-
-
-        //save in opponent score and question index
-        settingsOpponent = getSharedPreferences("PREF_GAME", 0);
-        SharedPreferences.Editor editor = settingsOpponent.edit();
-        editor.putInt("OPPONENT_SCORE", opponentPoints);
-        editor.putInt("QUESTION_INDEX", currentQuestionIndex);
-        editor.commit();
-
         //save in my score
-        SharedPreferences settingsUser = getSharedPreferences("MY SCORE_PREF",0);
+        SharedPreferences settingsUser = getSharedPreferences("MY_SCORE_PREF",0);
         SharedPreferences.Editor editorUser = settingsUser.edit();
-        editorUser.putInt("MY_SCORE", points);
+        editorUser.putInt("MY_SCORE", myPoints);
         editorUser.commit();
 
     }
-    @Override
-    public void onClick(View v) {
 
-        if(v.getId() == R.id.answer1 && v.getId() == R.id.answer2){
-            userAnswer = answer1.getText().toString()+" "+answer2.getText().toString();
-        }
-        if(v.getId() == R.id.answer1 && v.getId() == R.id.answer3){
-            userAnswer = answer1.getText().toString()+" "+answer3.getText().toString();
-        }
-        if(v.getId() == R.id.answer1 && v.getId() == R.id.answer4){
-            userAnswer = answer1.getText().toString()+" "+answer4.getText().toString();
-        }
-        if(v.getId() == R.id.answer2 && v.getId() == R.id.answer3){
-            userAnswer = answer2.getText().toString()+" "+answer3.getText().toString();
-        }
-        if(v.getId() == R.id.answer2 && v.getId() == R.id.answer4){
-            userAnswer = answer2.getText().toString()+" "+answer4.getText().toString();
-        }
-        if(v.getId() == R.id.answer3 && v.getId() == R.id.answer4){
-            userAnswer = answer3.getText().toString()+" "+answer4.getText().toString();
-        }
 
-    }
 
-    private AnswerModel getAnswerModel(){
+
+    private AnswerModel getAnswerModel(int questionIndex){
         AnswerModel answerModel = new AnswerModel();
         answerModel.setAnswer(userAnswer);
         answerModel.setCorrect(correct);
-        answerModel.setCurrentQuestonIndex(currentQuestionIndex);
+        answerModel.setQuestionIndex(questionIndex);
 
         return answerModel;
     }
 
     private  void startQuestion(){
+        questionIndex = 0;
+
         timer = new CountDownTimer(7000,1000) {
             @Override
             public void onTick(long millisUntilFinished) {
@@ -142,9 +111,9 @@ public class PlaySynonymsActivity extends Activity implements View.OnClickListen
 
             @Override
             public void onFinish() {
-                final AnswerModel answerModel = getAnswerModel();
-                currentQuestionIndex++;
-                if(currentQuestionIndex == 4){
+                questionIndex++;
+                final AnswerModel answerModel = getAnswerModel(questionIndex);
+                if(questionIndex == 4){
                     timer.cancel();
                     startActivity(new Intent(PlaySynonymsActivity.this, SplashScreenDefinitions.class));
                     finish();
@@ -177,88 +146,66 @@ public class PlaySynonymsActivity extends Activity implements View.OnClickListen
 
     public void getQuestion(AnswerModel answerModel){
 
+        Call<ReceiveQuestionSynonymModel> receiveQuestionCall = service.receiveQuestionSynonym(answerModel);
 
-
-        Call<ReceiveQuestionModel> receiveQuestionCall = service.receiveQuestion(answerModel);
-
-        receiveQuestionCall.enqueue(new Callback<ReceiveQuestionModel>() {
+        receiveQuestionCall.enqueue(new Callback<ReceiveQuestionSynonymModel>() {
             @Override
-            public void onResponse(Call<ReceiveQuestionModel> call, Response<ReceiveQuestionModel> response) {
-
-
+            public void onResponse(Call<ReceiveQuestionSynonymModel> call, Response<ReceiveQuestionSynonymModel> response) {
 
                 if(response.isSuccessful()){
-                    ReceiveQuestionModel receiveQuestionModel = response.body();
 
-                    SynonymsModel synonymsModel = (SynonymsModel)receiveQuestionModel.getTypeOfQuestion();
-                    SynonymsModel synonymQuestion = new SynonymsModel();
+                if(response.body().toString() != null) {
+                    Log.e("Response sinonim", response.body().toString());
+                }
+                    setDisabledButtons();
 
-                    synonymQuestion.setId(synonymsModel.getId());
-                    synonymQuestion.setCorrectAnswer1(synonymsModel.getCorrectAnswer1());
-                    synonymQuestion.setCorrectAnswer2(synonymsModel.getCorrectAnswer2());
-                    synonymQuestion.setWrongAnswer1(synonymsModel.getWrongAnswer1());
-                    synonymQuestion.setWrongAnswer2(synonymsModel.getWrongAnswer2());
+                    final SynonymsModel synonymQuestion = response.body().getQuestion();
+                    final int opponentPoints = response.body().getOpponentPoints();
+                    String opponentAnswer = response.body().getOpponentAnswer();
 
-                    String opponentAnswer = receiveQuestionModel.getOpponentAnswer();
-                    String opponentAnswer1 = opponentAnswer.split(" ")[0];
-                    String opponentAnswer2 = opponentAnswer.split(" ")[0];
+                    final String opponentAnswer1 = opponentAnswer.split(" ")[0];
+                    final String opponentAnswer2 = opponentAnswer.split(" ")[1];
 
-                    opponentPoints = receiveQuestionModel.getOpponentPoints();
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            setEnabledButtons();
+                            setAnswer(synonymQuestion);
+                            opponentScore.setText("Opponent\n score: "+String.valueOf(opponentPoints));
+                            checkAnswer(synonymQuestion);
+                            if(checkAnswer(synonymQuestion)){
+                                myPoints += 1;
+                                score.setText("Score: "+String.valueOf(myPoints));
+                            }
 
-
-
-                    //set question on layout
-                    setAnswer(synonymQuestion);
-
-                    //checking a question
-                    checkAnswer(synonymQuestion);
-                    if(checkAnswer(synonymQuestion)){
-                        correct = true;
-                        points += 1;
-                        score.setText(points);
-                    }
-                    else{
-                        correct = false;
-                        points -= 1;
-                        score.setText(points);
-
-                    }
-
-                    //show opponent's answer
-                    if(answer1.getText().toString().equals(opponentAnswer1) || answer1.getText().toString().equals(opponentAnswer2)){
-                        answer1.setBackgroundColor(Color.YELLOW);
-                        answer1.setTextColor(Color.BLACK);
-                    }
-                    else if(answer2.getText().toString().equals(opponentAnswer1) || answer2.getText().toString().equals(opponentAnswer2)){
-                        answer2.setBackgroundColor(Color.YELLOW);
-                        answer2.setTextColor(Color.BLACK);
-                    }
-                    else if(answer3.getText().toString().equals(opponentAnswer1) || answer3.getText().toString().equals(opponentAnswer2)){
-                        answer2.setBackgroundColor(Color.YELLOW);
-                        answer2.setTextColor(Color.BLACK);
-                    }
-                    else if(answer4.getText().toString().equals(opponentAnswer1) || answer4.getText().toString().equals(opponentAnswer2)){
-                        answer2.setBackgroundColor(Color.YELLOW);
-                        answer2.setTextColor(Color.BLACK);
-                    }
-
-
-                    opponentScore.setText(opponentPoints);
+                        }
+                    },2000);
 
 
 
+
+                    new Handler().postDelayed(new Runnable() {
+
+                        public void run() {
+                            showOpponentsAnswer(opponentAnswer1,opponentAnswer2);
+                        }
+                    }, 200);
 
 
                 }
                 else{
-                    Log.e("Response synonym", response.message()+" "+response.code());
+                    if(response.message() != null) {
+                        Log.e("Response synonym", response.message());
+                    }
                     Toast.makeText(getBaseContext(), response.message(), Toast.LENGTH_LONG).show();
                 }
             }
 
             @Override
-            public void onFailure(Call<ReceiveQuestionModel> call, Throwable t) {
-                Log.e("Sinonimi", t.getMessage());
+            public void onFailure(Call<ReceiveQuestionSynonymModel> call, Throwable t) {
+                if(t.getMessage() != null) {
+                    Log.e("Sinonimi", t.getMessage());
+                }
 
                 Toast.makeText(getBaseContext(), "Sorry, but there is an error!", Toast.LENGTH_LONG).show();
                 startActivity(new Intent(PlaySynonymsActivity.this, MainMenuActivity.class));
@@ -268,144 +215,227 @@ public class PlaySynonymsActivity extends Activity implements View.OnClickListen
 
     }
 
+    private boolean checkAnswer(SynonymsModel synonymsModel){
+
+        final String correct1 = synonymsModel.getCorrectAnswer1();
+        final String correct2 = synonymsModel.getCorrectAnswer2();
+        counterButtons = 0;
+        correct = false;
 
 
-    private boolean checkAnswer(SynonymsModel synonymQuestion){
+        answer1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!(answer1.getText().toString().equals(correct1) || answer1.getText().toString().equals(correct2))){
+                    answer1.setBackgroundColor(Color.RED);
+                    answer1.setTextColor(Color.BLACK);
 
-        final String correct1 = synonymQuestion.getCorrectAnswer1();
-        final String correct2 = synonymQuestion.getCorrectAnswer2();
+                    answer2.setEnabled(false);
+                    answer3.setEnabled(false);
+                    answer4.setEnabled(false);
 
-        if(answer1.isActivated() && answer2.isActivated()){
-            if((answer1.getText().toString().equals(correct1) && answer2.getText().toString().equals(correct2)) ||
-                    (answer1.getText().toString().equals(correct2) && answer2.getText().toString().equals(correct1))){
-                answer1.setBackgroundColor(Color.GREEN);
-                answer1.setTextColor(Color.BLACK);
-                answer2.setBackgroundColor(Color.GREEN);
-                answer2.setTextColor(Color.BLACK);
+                    counterButtons = 0;
+                    correct = false;
+                }
+                else{
+                    counterButtons++;
+                    answer1.setBackgroundColor(Color.GREEN);
+                    answer1.setTextColor(Color.BLACK);
 
-                return true;
+                    if(counterButtons == 2){
+                        correct = true;
+
+                    }
+                }
+                userAnswer = answer1.getText().toString()+" second";
+
+                new Handler().postDelayed(new Runnable() {
+
+                    public void run() {
+                        answer1.setTextColor(Color.BLACK);
+                        answer1.setBackgroundColor(Color.parseColor("#979292"));
+                    }
+                }, 300);
             }
-        }
-        else{
-            answer1.setBackgroundColor(Color.RED);
-            answer1.setTextColor(Color.BLACK);
-            answer2.setBackgroundColor(Color.RED);
-            answer2.setTextColor(Color.BLACK);
+        });
 
-            return false;
-        }
-        if(answer1.isActivated() && answer3.isActivated()){
-            if((answer1.getText().toString().equals(correct1) && answer3.getText().toString().equals(correct2)) ||
-                    (answer1.getText().toString().equals(correct2) && answer3.getText().toString().equals(correct1))){
-                answer1.setBackgroundColor(Color.GREEN);
-                answer1.setTextColor(Color.BLACK);
-                answer3.setBackgroundColor(Color.GREEN);
-                answer3.setTextColor(Color.BLACK);
+        answer2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!(answer2.getText().toString().equals(correct1) || answer2.getText().toString().equals(correct2))){
+                    answer2.setBackgroundColor(Color.RED);
+                    answer2.setTextColor(Color.BLACK);
 
-                return true;
+                    answer1.setEnabled(false);
+                    answer3.setEnabled(false);
+                    answer4.setEnabled(false);
+
+                    counterButtons = 0;
+                    correct = false;
+                }
+                else{
+                    counterButtons++;
+                    answer2.setBackgroundColor(Color.GREEN);
+                    answer2.setTextColor(Color.BLACK);
+
+                    if(counterButtons == 2){
+                        correct = true;
+                    }
+                }
+                userAnswer = answer2.getText().toString()+" second";
+
+
+                new Handler().postDelayed(new Runnable() {
+
+                    public void run() {
+                        answer2.setTextColor(Color.BLACK);
+                        answer2.setBackgroundColor(Color.parseColor("#979292"));
+                    }
+                }, 300);
             }
-        }
-        else{
-            answer1.setBackgroundColor(Color.RED);
-            answer1.setTextColor(Color.BLACK);
-            answer3.setBackgroundColor(Color.RED);
-            answer3.setTextColor(Color.BLACK);
+        });
 
-            return false;
-        }
-        if(answer1.isActivated() && answer4.isActivated()){
-            if((answer1.getText().toString().equals(correct1) && answer4.getText().toString().equals(correct2)) ||
-                    (answer1.getText().toString().equals(correct2) && answer4.getText().toString().equals(correct1))){
-                answer1.setBackgroundColor(Color.GREEN);
-                answer1.setTextColor(Color.BLACK);
-                answer4.setBackgroundColor(Color.GREEN);
-                answer4.setTextColor(Color.BLACK);
+        answer3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!(answer3.getText().toString().equals(correct1) || answer3.getText().toString().equals(correct2))){
+                    answer3.setBackgroundColor(Color.RED);
+                    answer3.setTextColor(Color.BLACK);
 
-                return true;
+                    answer1.setEnabled(false);
+                    answer2.setEnabled(false);
+                    answer4.setEnabled(false);
+
+                    counterButtons = 0;
+                    correct = false;
+                }
+                else{
+                    counterButtons++;
+                    answer3.setBackgroundColor(Color.GREEN);
+                    answer3.setTextColor(Color.BLACK);
+
+                    if(counterButtons == 2){
+                        correct = true;
+                    }
+                }
+                userAnswer = answer3.getText().toString()+" second";
+
+                new Handler().postDelayed(new Runnable() {
+
+                    public void run() {
+                        answer3.setTextColor(Color.BLACK);
+                        answer3.setBackgroundColor(Color.parseColor("#979292"));
+                    }
+                }, 300);
             }
-        }
-        else{
-            answer1.setBackgroundColor(Color.RED);
-            answer1.setTextColor(Color.BLACK);
-            answer4.setBackgroundColor(Color.RED);
-            answer4.setTextColor(Color.BLACK);
+        });
 
-            return false;
-        }
+        answer4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!(answer4.getText().toString().equals(correct1) || answer4.getText().toString().equals(correct2))){
+                    answer4.setBackgroundColor(Color.RED);
+                    answer4.setTextColor(Color.BLACK);
 
-        if(answer2.isActivated() && answer3.isActivated()){
-            if((answer2.getText().toString().equals(correct1) && answer3.getText().toString().equals(correct2)) ||
-                    (answer2.getText().toString().equals(correct2) && answer3.getText().toString().equals(correct1))){
-                answer2.setBackgroundColor(Color.GREEN);
-                answer2.setTextColor(Color.BLACK);
-                answer3.setBackgroundColor(Color.GREEN);
-                answer3.setTextColor(Color.BLACK);
+                    answer1.setEnabled(false);
+                    answer2.setEnabled(false);
+                    answer3.setEnabled(false);
 
-                return true;
+                    counterButtons = 0;
+                    correct = false;
+                }
+                else{
+                    counterButtons++;
+                    answer4.setBackgroundColor(Color.GREEN);
+                    answer4.setTextColor(Color.BLACK);
+
+                    if(counterButtons == 2){
+                        correct = true;
+                    }
+                }
+                userAnswer = answer4.getText().toString()+" second";
+
+                new Handler().postDelayed(new Runnable() {
+
+                    public void run() {
+                        answer4.setTextColor(Color.BLACK);
+                        answer4.setBackgroundColor(Color.parseColor("#979292"));
+                    }
+                }, 300);
             }
-        }
-        else{
-            answer2.setBackgroundColor(Color.RED);
-            answer2.setTextColor(Color.BLACK);
-            answer3.setBackgroundColor(Color.RED);
-            answer3.setTextColor(Color.BLACK);
+        });
 
-            return false;
-        }
-        if(answer2.isActivated() && answer4.isActivated()){
-            if((answer2.getText().toString().equals(correct1) && answer4.getText().toString().equals(correct2)) ||
-                    (answer2.getText().toString().equals(correct2) && answer4.getText().toString().equals(correct1))){
-                answer2.setBackgroundColor(Color.GREEN);
-                answer2.setTextColor(Color.BLACK);
-                answer4.setBackgroundColor(Color.GREEN);
-                answer4.setTextColor(Color.BLACK);
-
-                return true;
-            }
-        }
-        else{
-            answer2.setBackgroundColor(Color.RED);
-            answer2.setTextColor(Color.BLACK);
-            answer4.setBackgroundColor(Color.RED);
-            answer4.setTextColor(Color.BLACK);
-
-            return false;
-        }
-        if(answer3.isActivated() && answer4.isActivated()){
-            if((answer3.getText().toString().equals(correct1) && answer4.getText().toString().equals(correct2)) ||
-                    (answer3.getText().toString().equals(correct2) && answer4.getText().toString().equals(correct1))){
-                answer3.setBackgroundColor(Color.GREEN);
-                answer3.setTextColor(Color.BLACK);
-                answer4.setBackgroundColor(Color.GREEN);
-                answer4.setTextColor(Color.BLACK);
-
-                return true;
-            }
-        }
-        else{
-            answer3.setBackgroundColor(Color.RED);
-            answer3.setTextColor(Color.BLACK);
-            answer4.setBackgroundColor(Color.RED);
-            answer4.setTextColor(Color.BLACK);
-
-            return false;
-        }
-        new Handler().postDelayed(new Runnable() {
-
-            public void run() {
-                answer1.setTextColor(Color.BLACK);
-                answer1.setBackgroundColor(Color.parseColor("#979292"));
-                answer2.setTextColor(Color.BLACK);
-                answer2.setBackgroundColor(Color.parseColor("#979292"));
-                answer3.setTextColor(Color.BLACK);
-                answer3.setBackgroundColor(Color.parseColor("#979292"));
-                answer4.setTextColor(Color.BLACK);
-                answer4.setBackgroundColor(Color.parseColor("#979292"));
-            }
-        }, 300);
-
-        return false;
+        return correct;
     }
+
+    private void showOpponentsAnswer(String opponentAnswer1, String opponentAnswer2){
+
+        if(answer1.getText().toString().equals(opponentAnswer1) || answer1.getText().toString().equals(opponentAnswer2)){
+            answer1.setBackgroundColor(Color.YELLOW);
+            answer1.setTextColor(Color.BLACK);
+
+            new Handler().postDelayed(new Runnable() {
+
+                public void run() {
+                    answer4.setTextColor(Color.BLACK);
+                    answer4.setBackgroundColor(Color.parseColor("#979292"));
+                }
+            }, 200);
+        }
+        else if(answer2.getText().toString().equals(opponentAnswer1) || answer2.getText().toString().equals(opponentAnswer2)){
+            answer2.setBackgroundColor(Color.YELLOW);
+            answer2.setTextColor(Color.BLACK);
+
+            new Handler().postDelayed(new Runnable() {
+
+                public void run() {
+                    answer4.setTextColor(Color.BLACK);
+                    answer4.setBackgroundColor(Color.parseColor("#979292"));
+                }
+            }, 200);
+        }
+        else if(answer3.getText().toString().equals(opponentAnswer1) || answer3.getText().toString().equals(opponentAnswer2)){
+            answer2.setBackgroundColor(Color.YELLOW);
+            answer2.setTextColor(Color.BLACK);
+
+            new Handler().postDelayed(new Runnable() {
+
+                public void run() {
+                    answer4.setTextColor(Color.BLACK);
+                    answer4.setBackgroundColor(Color.parseColor("#979292"));
+                }
+            }, 200);
+        }
+        else if(answer4.getText().toString().equals(opponentAnswer1) || answer4.getText().toString().equals(opponentAnswer2)){
+            answer2.setBackgroundColor(Color.YELLOW);
+            answer2.setTextColor(Color.BLACK);
+
+            new Handler().postDelayed(new Runnable() {
+
+                public void run() {
+                    answer4.setTextColor(Color.BLACK);
+                    answer4.setBackgroundColor(Color.parseColor("#979292"));
+                }
+            }, 200);
+        }
+
+    }
+
+    private void setEnabledButtons(){
+        answer1.setEnabled(true);
+        answer2.setEnabled(true);
+        answer3.setEnabled(true);
+        answer4.setEnabled(true);
+    }
+
+    private void setDisabledButtons(){
+        answer1.setEnabled(false);
+        answer2.setEnabled(false);
+        answer3.setEnabled(false);
+        answer4.setEnabled(false);
+    }
+
+
 
 
 

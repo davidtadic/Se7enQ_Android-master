@@ -12,9 +12,9 @@ public class AnswerModel {
     @SerializedName("correct")
     @Expose
     private boolean correct;
-    @SerializedName("currentQuestonIndex")
+    @SerializedName("questionIndex")
     @Expose
-    private int currentQuestonIndex;
+    private int questionIndex;
 
 
     public String getAnswer() {
@@ -37,13 +37,13 @@ public class AnswerModel {
     }
 
 
-    public long getCurrentQuestonIndex() {
-        return currentQuestonIndex;
+    public long getQuestionIndex() {
+        return questionIndex;
     }
 
 
-    public void setCurrentQuestonIndex(int currentQuestonIndex) {
-        this.currentQuestonIndex = currentQuestonIndex;
+    public void setQuestionIndex(int questionIndex) {
+        this.questionIndex = questionIndex;
     }
 
 }

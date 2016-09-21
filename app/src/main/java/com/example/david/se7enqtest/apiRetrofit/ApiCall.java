@@ -4,7 +4,11 @@ import com.example.david.se7enqtest.models.AnswerModel;
 import com.example.david.se7enqtest.models.ArrayModel;
 import com.example.david.se7enqtest.models.CalculationModel;
 import com.example.david.se7enqtest.models.GeneralKnowledgeModel;
-import com.example.david.se7enqtest.models.ReceiveQuestionModel;
+import com.example.david.se7enqtest.models.ReceiveQuestionArrayModel;
+import com.example.david.se7enqtest.models.ReceiveQuestionCalculationModel;
+import com.example.david.se7enqtest.models.ReceiveQuestionDefinitionModel;
+import com.example.david.se7enqtest.models.ReceiveQuestionKnowledgeModel;
+import com.example.david.se7enqtest.models.ReceiveQuestionSynonymModel;
 import com.example.david.se7enqtest.models.SynonymsModel;
 import com.example.david.se7enqtest.models.TokenModel;
 import com.example.david.se7enqtest.models.UserLogin;
@@ -30,27 +34,43 @@ public interface ApiCall {
     @POST("User/Register/")
     Call<UserRegister> getUserRegister(@Body UserRegister userRegister);
 
+    @GET("training/GetWordSynonyms")
+    Call<List<SynonymsModel>> getSynonym();
 
     @GET("training/GetWordDefinitions")
     Call<List<DefinitionModel>> getWordDefinitions();
+
+    @GET("training/GetLogicArrays")
+    Call<List<ArrayModel>> getArray();
+
+    @GET("training/GetCalculations")
+    Call<List<CalculationModel>> getCalculation();
+
+    @GET("training/GetGeneralKnowledge")
+    Call<List<GeneralKnowledgeModel>> getKnowledge();
 
     @POST("Game/FindOpponent")
     Call<UserRegister> findOpponent();
 
     @POST("Game/ReceiveQuestion")
-    Call<ReceiveQuestionModel> receiveQuestion(@Body AnswerModel answer);
-
-    /*@POST("Game/ReceiveQuestion")
-    Call<DefinitionModel> receiveQuestionDefinitions(@Body AnswerModel answer);
+    Call<ReceiveQuestionSynonymModel> receiveQuestionSynonym(@Body AnswerModel answer);
 
     @POST("Game/ReceiveQuestion")
-    Call<ArrayModel> receiveQuestionArray(@Body AnswerModel answer);
+    Call<ReceiveQuestionDefinitionModel> receiveQuestionDefinition(@Body AnswerModel answer);
 
     @POST("Game/ReceiveQuestion")
-    Call<CalculationModel> receiveQuestionCalculation(@Body AnswerModel answer);
+    Call<ReceiveQuestionArrayModel> receiveQuestionArray(@Body AnswerModel answer);
 
     @POST("Game/ReceiveQuestion")
-    Call<GeneralKnowledgeModel> receiveQuestionGeneralKnowledge(@Body AnswerModel answer);*/
+    Call<ReceiveQuestionCalculationModel> receiveQuestionCalculation(@Body AnswerModel answer);
+
+    @POST("Game/ReceiveQuestion")
+    Call<ReceiveQuestionKnowledgeModel> receiveQuestionKnowledge(@Body AnswerModel answer);
+
+
+
+
+
 
 
 

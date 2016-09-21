@@ -1,8 +1,14 @@
 
 package com.example.david.se7enqtest.models;
 
+import android.content.Intent;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class ArrayModel {
 
@@ -26,7 +32,7 @@ public class ArrayModel {
     private int wrongNumber3;
     @SerializedName("gameQuestions")
 
-    public long getId() {
+    public int getId() {
         return id;
     }
 
@@ -46,7 +52,7 @@ public class ArrayModel {
     }
 
 
-    public long getCorrectNumber() {
+    public int getCorrectNumber() {
         return correctNumber;
     }
 
@@ -56,7 +62,7 @@ public class ArrayModel {
     }
 
 
-    public long getWrongNumber1() {
+    public int getWrongNumber1() {
         return wrongNumber1;
     }
 
@@ -66,7 +72,7 @@ public class ArrayModel {
     }
 
 
-    public long getWrongNumber2() {
+    public int getWrongNumber2() {
         return wrongNumber2;
     }
 
@@ -76,13 +82,27 @@ public class ArrayModel {
     }
 
 
-    public long getWrongNumber3() {
+    public int getWrongNumber3() {
         return wrongNumber3;
     }
 
 
     public void setWrongNumber3(int wrongNumber3) {
         this.wrongNumber3 = wrongNumber3;
+    }
+
+    public List<Integer> getQuestionOptions(){
+        List<Integer> shuffle = new ArrayList<Integer>();
+
+        shuffle.add(correctNumber);
+        shuffle.add(wrongNumber1);
+        shuffle.add(wrongNumber2);
+        shuffle.add(wrongNumber3);
+
+        Collections.shuffle(shuffle);
+
+        return shuffle;
+
     }
 
 

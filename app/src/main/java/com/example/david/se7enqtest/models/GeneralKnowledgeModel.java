@@ -5,6 +5,10 @@ package com.example.david.se7enqtest.models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 public class GeneralKnowledgeModel {
 
     @SerializedName("id")
@@ -85,6 +89,20 @@ public class GeneralKnowledgeModel {
 
     public void setWrongAnswer3(String wrongAnswer3) {
         this.wrongAnswer3 = wrongAnswer3;
+    }
+
+    public List<String> getQuestionOptions(){
+        List<String> shuffle = new ArrayList<String>();
+
+        shuffle.add(correctAnswer);
+        shuffle.add(wrongAnswer1);
+        shuffle.add(wrongAnswer2);
+        shuffle.add(wrongAnswer3);
+
+        Collections.shuffle(shuffle);
+
+        return shuffle;
+
     }
 
 

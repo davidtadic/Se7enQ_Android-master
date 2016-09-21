@@ -224,8 +224,14 @@ public class DefinitionsAcitivity extends Activity {
                         answer1.setBackgroundColor(Color.parseColor("#979292"));
                     }
                 }, 300);
+                new Handler().postDelayed(new Runnable() {
 
-                timer.onFinish();
+                    public void run() {
+                        timer.onFinish();
+
+                    }
+                }, 300);
+
 
             }
         });
@@ -251,7 +257,13 @@ public class DefinitionsAcitivity extends Activity {
                 }, 300);
 
 
-                timer.onFinish();
+                new Handler().postDelayed(new Runnable() {
+
+                    public void run() {
+                        timer.onFinish();
+
+                    }
+                }, 300);
 
 
             }
@@ -277,7 +289,13 @@ public class DefinitionsAcitivity extends Activity {
                 }, 300);
 
 
-                timer.onFinish();
+                new Handler().postDelayed(new Runnable() {
+
+                    public void run() {
+                        timer.onFinish();
+
+                    }
+                }, 300);
 
 
             }
@@ -302,7 +320,13 @@ public class DefinitionsAcitivity extends Activity {
                     }
                 }, 300);
 
-                timer.onFinish();
+                new Handler().postDelayed(new Runnable() {
+
+                    public void run() {
+                        timer.onFinish();
+
+                    }
+                }, 300);
 
 
             }

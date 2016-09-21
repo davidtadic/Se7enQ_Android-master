@@ -4,6 +4,10 @@ package com.example.david.se7enqtest.models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 public class CalculationModel {
 
     @SerializedName("id")
@@ -83,6 +87,20 @@ public class CalculationModel {
 
     public void setWrongResult3(int wrongResult3) {
         this.wrongResult3 = wrongResult3;
+    }
+
+    public List<Integer> getQuestionOptions(){
+        List<Integer> shuffle = new ArrayList<Integer>();
+
+        shuffle.add(correctResult);
+        shuffle.add(wrongResult1);
+        shuffle.add(wrongResult2);
+        shuffle.add(wrongResult3);
+
+        Collections.shuffle(shuffle);
+
+        return shuffle;
+
     }
 
 

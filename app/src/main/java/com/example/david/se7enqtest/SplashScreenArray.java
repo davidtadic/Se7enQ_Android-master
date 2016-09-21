@@ -8,7 +8,7 @@ import android.widget.TextView;
 
 public class SplashScreenArray extends Activity {
 
-    private static int SPLASH_TIME_OUT = 1500;
+    //private static int SPLASH_TIME_OUT = 1500;
     TextView round;
     TextView array;
 
@@ -21,7 +21,7 @@ public class SplashScreenArray extends Activity {
         array = (TextView)findViewById(R.id.array);
 
 
-        new Handler().postDelayed(new Runnable() {
+        /*new Handler().postDelayed(new Runnable() {
 
 
             @Override
@@ -32,6 +32,6 @@ public class SplashScreenArray extends Activity {
 
                 finish();
             }
-        }, SPLASH_TIME_OUT);
+        }, SPLASH_TIME_OUT);*/
     }
 }

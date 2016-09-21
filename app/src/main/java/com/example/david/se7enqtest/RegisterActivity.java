@@ -99,6 +99,7 @@ public class RegisterActivity extends Activity {
         final ProgressDialog progressDialog = new ProgressDialog(RegisterActivity.this,
                 R.style.MyThemeDarkDialog);
         progressDialog.setIndeterminate(true);
+        progressDialog.setCancelable(false);
         progressDialog.setMessage("Authenticating...");
         progressDialog.show();
 
