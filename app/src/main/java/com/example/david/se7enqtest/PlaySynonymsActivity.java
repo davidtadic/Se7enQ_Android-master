@@ -192,6 +192,8 @@ public class PlaySynonymsActivity extends Activity{
                 if(t.getMessage() != null) {
                     Log.e("Sinonimi", t.getMessage());
                 }
+                timer.cancel();
+
                 finish();
 
                 Toast.makeText(getBaseContext(), "Sorry, but there is an error!", Toast.LENGTH_LONG).show();

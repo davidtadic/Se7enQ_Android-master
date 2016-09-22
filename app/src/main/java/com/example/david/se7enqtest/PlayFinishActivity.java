@@ -30,8 +30,8 @@ public class PlayFinishActivity extends Activity {
     ImageView logo;
     TextView resultOfGame;
     TextView finishScore;
-    AnswerModel answerModel1;
-    ApiCall service;
+    ApiCall service1;
+    ApiCall service2;
     Button ok;
 
     @Override
@@ -52,15 +52,17 @@ public class PlayFinishActivity extends Activity {
         //getting answer model from knowledge
         SharedPreferences settingsAnswer = getSharedPreferences("ANSWER_MODEL",0);
         boolean correctFirst = settingsAnswer.getBoolean("ANSWER_CORRECT_KNOWLEDGE",false);
-        String answerFirst = settingsAnswer.getString("ANSWER_KNOWLEDGE","");
+        String answerFirst = settingsAnswer.getString("ANSWER_KNOWLEDGE","pera");
 
-        answerModel1 = new AnswerModel();
+        AnswerModel answerModel1 = new AnswerModel();
         answerModel1.setAnswer(answerFirst);
         answerModel1.setCorrect(correctFirst);
         answerModel1.setQuestionIndex(20);
 
         //making a service
-        service = ServiceGenerator.createServiceAuthorization(ApiCall.class, userToken);
+        service1 = ServiceGenerator.createServiceAuthorization(ApiCall.class, userToken);
+        //making a service for finish
+        service2 = ServiceGenerator.createServiceAuthorization(ApiCall.class, userToken);
 
         //get result of game
         getQuestion(answerModel1);
@@ -68,8 +70,7 @@ public class PlayFinishActivity extends Activity {
         ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(PlayFinishActivity.this, MainMenuActivity.class));
-                finish();
+                deleteGame();
             }
         });
 
@@ -78,7 +79,7 @@ public class PlayFinishActivity extends Activity {
 
     public void getQuestion(AnswerModel answerModel){
 
-        Call<ReceiveScore> receiveQuestionCall = service.receiveScore(answerModel);
+        Call<ReceiveScore> receiveQuestionCall = service1.receiveScore(answerModel);
 
         receiveQuestionCall.enqueue(new Callback<ReceiveScore>() {
             @Override
@@ -101,11 +102,10 @@ public class PlayFinishActivity extends Activity {
                     }
 
                     finishScore.setText(String.valueOf(playerPoints)+" : "+String.valueOf(opponentPoints));
-
                 }
                 else{
                     if(response.message() != null) {
-                        Log.e("Response GK.", response.message());
+                        Log.e("RESPONSE_ERROR", response.message());
                     }
                     Toast.makeText(getBaseContext(), response.message(), Toast.LENGTH_LONG).show();
                 }
@@ -114,14 +114,39 @@ public class PlayFinishActivity extends Activity {
             @Override
             public void onFailure(Call<ReceiveScore> call, Throwable t) {
                 if(t.getMessage() != null) {
-                    Log.e("GK failure", t.getMessage());
+                    Log.e("FAILURE_ERROR", t.getMessage());
                 }
 
                 Toast.makeText(getBaseContext(), "Sorry, but there is an error!", Toast.LENGTH_LONG).show();
+
+            }
+        });
+
+    }
+
+    public void deleteGame(){
+
+        Call<Void> deleteCall = service2.deleteGame();
+        deleteCall.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if(response.isSuccessful()){
+                    if(response.message() != null) {
+                        Log.e("ClickResponse", response.message());
+                    }
+                    startActivity(new Intent(PlayFinishActivity.this, MainMenuActivity.class));
+                    finish();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                if(t.getMessage() != null){
+                    Log.e("ClickFailure", t.getMessage());
+                }
                 startActivity(new Intent(PlayFinishActivity.this, MainMenuActivity.class));
                 finish();
             }
         });
-
     }
 }

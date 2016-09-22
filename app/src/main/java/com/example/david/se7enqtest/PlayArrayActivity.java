@@ -41,7 +41,6 @@ public class PlayArrayActivity extends Activity {
     CountDownTimer timer;
     ApiCall service;
     String userAnswer = "1";
-    AnswerModel answerModel1;
     boolean correct = false;
 
     @Override
@@ -63,11 +62,11 @@ public class PlayArrayActivity extends Activity {
         final String userToken = settings.getString("TOKEN","");
 
         //getting answer model from definitions
-        SharedPreferences settingsAnswer = getSharedPreferences("ANSWER_MODEL",0);
+        SharedPreferences settingsAnswer = getSharedPreferences("ANSWER_MODEL1",0);
         boolean correctFirst = settingsAnswer.getBoolean("ANSWER_CORRECT_DEFINITION",false);
-        String answerFirst = settingsAnswer.getString("ANSWER_DEFINITION","");
+        String answerFirst = settingsAnswer.getString("ANSWER_DEFINITION","pera");
 
-        answerModel1 = new AnswerModel();
+        AnswerModel answerModel1 = new AnswerModel();
         answerModel1.setAnswer(answerFirst);
         answerModel1.setCorrect(correctFirst);
         answerModel1.setQuestionIndex(8);
@@ -128,6 +127,8 @@ public class PlayArrayActivity extends Activity {
                 }
             }
         }.start();
+
+
 
 
     }
@@ -191,10 +192,11 @@ public class PlayArrayActivity extends Activity {
                 if(t.getMessage() != null) {
                     Log.e("Niz", t.getMessage());
                 }
+                timer.cancel();
+                finish();
 
                 Toast.makeText(getBaseContext(), "Sorry, but there is an error!", Toast.LENGTH_LONG).show();
                 startActivity(new Intent(PlayArrayActivity.this, MainMenuActivity.class));
-                finish();
             }
         });
 

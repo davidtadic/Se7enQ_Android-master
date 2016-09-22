@@ -41,7 +41,6 @@ public class PlayDefinitionsActivity extends Activity {
     CountDownTimer timer;
     ApiCall service;
     String userAnswer = "pera";
-    AnswerModel answerModel1;
     boolean correct = false;
 
     @Override
@@ -67,9 +66,9 @@ public class PlayDefinitionsActivity extends Activity {
         //getting answer model from synonyms
         SharedPreferences settingsAnswer = getSharedPreferences("ANSWER_MODEL",0);
         boolean correctFirst = settingsAnswer.getBoolean("ANSWER_CORRECT_SYNONYM",false);
-        String answerFirst = settingsAnswer.getString("ANSWER_SYNONYM","");
+        String answerFirst = settingsAnswer.getString("ANSWER_SYNONYM","pera");
 
-        answerModel1 = new AnswerModel();
+        AnswerModel answerModel1 = new AnswerModel();
         answerModel1.setAnswer(answerFirst);
         answerModel1.setCorrect(correctFirst);
         answerModel1.setQuestionIndex(4);
@@ -80,10 +79,6 @@ public class PlayDefinitionsActivity extends Activity {
         //start quiz
         getQuestion(answerModel1);
         startQuestion();
-
-
-
-
 
     }
 
@@ -99,7 +94,6 @@ public class PlayDefinitionsActivity extends Activity {
 
     private  void startQuestion(){
         questionIndex = 4;
-
         timer = new CountDownTimer(7000,1000) {
             @Override
             public void onTick(long millisUntilFinished) {
@@ -111,7 +105,7 @@ public class PlayDefinitionsActivity extends Activity {
                 questionIndex++;
                 final AnswerModel answerModel = getAnswerModel(questionIndex);
                 if(questionIndex == 8){
-                    SharedPreferences settingsAnswer = getSharedPreferences("ANSWER_MODEL",0);
+                    SharedPreferences settingsAnswer = getSharedPreferences("ANSWER_MODEL1",0);
                     SharedPreferences.Editor editorAnswer = settingsAnswer.edit();
                     editorAnswer.putBoolean("ANSWER_CORRECT_DEFINITION", correct);
                     editorAnswer.putString("ANSWER_DEFINITION", userAnswer);
@@ -133,6 +127,8 @@ public class PlayDefinitionsActivity extends Activity {
                 }
             }
         }.start();
+
+
 
 
     }
@@ -179,7 +175,6 @@ public class PlayDefinitionsActivity extends Activity {
                     opponentScore.setText("Opponent\n score: "+String.valueOf(opponentPoints));
                             checkAnswer(definitionQuestion);
 
-
                     //showOpponentsAnswer(opponentAnswer);
 
                 }
@@ -197,9 +192,11 @@ public class PlayDefinitionsActivity extends Activity {
                     Log.e("Definicije", t.getMessage());
                 }
 
+                finish();
+                timer.cancel();
+
                 Toast.makeText(getBaseContext(), "Sorry, but there is an error!", Toast.LENGTH_LONG).show();
                 startActivity(new Intent(PlayDefinitionsActivity.this, MainMenuActivity.class));
-                finish();
             }
         });
 

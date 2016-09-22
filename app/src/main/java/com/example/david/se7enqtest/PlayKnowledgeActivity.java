@@ -42,7 +42,6 @@ public class PlayKnowledgeActivity extends Activity {
     CountDownTimer timer;
     ApiCall service;
     String userAnswer = "pera";
-    AnswerModel answerModel1;
     boolean correct = false;
 
     @Override
@@ -66,9 +65,9 @@ public class PlayKnowledgeActivity extends Activity {
         //getting answer model from calculations
         SharedPreferences settingsAnswer = getSharedPreferences("ANSWER_MODEL",0);
         boolean correctFirst = settingsAnswer.getBoolean("ANSWER_CORRECT_CALCULATION",false);
-        String answerFirst = settingsAnswer.getString("ANSWER_CALCULATION","");
+        String answerFirst = settingsAnswer.getString("ANSWER_CALCULATION","4");
 
-        answerModel1 = new AnswerModel();
+        AnswerModel answerModel1 = new AnswerModel();
         answerModel1.setAnswer(answerFirst);
         answerModel1.setCorrect(correctFirst);
         answerModel1.setQuestionIndex(16);
@@ -189,10 +188,11 @@ public class PlayKnowledgeActivity extends Activity {
                 if(t.getMessage() != null) {
                     Log.e("GK failure", t.getMessage());
                 }
+                timer.cancel();
+                finish();
 
                 Toast.makeText(getBaseContext(), "Sorry, but there is an error!", Toast.LENGTH_LONG).show();
                 startActivity(new Intent(PlayKnowledgeActivity.this, MainMenuActivity.class));
-                finish();
             }
         });
 

@@ -71,6 +71,9 @@ public interface ApiCall {
     @POST("Game/ReceiveQuestion")
     Call<ReceiveScore> receiveScore(@Body AnswerModel answer);
 
+    @POST("Game/DeleteGame")
+    Call<Void> deleteGame();
+
 
 
 
