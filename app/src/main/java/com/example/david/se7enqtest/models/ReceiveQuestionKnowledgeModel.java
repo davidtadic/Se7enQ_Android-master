@@ -8,6 +8,8 @@ public class ReceiveQuestionKnowledgeModel {
     private GeneralKnowledgeModel question;
     private int opponentPoints;
     private String opponentAnswer;
+    private int playerPoints;
+
 
     public GeneralKnowledgeModel getQuestion() {
         return question;
@@ -31,5 +33,13 @@ public class ReceiveQuestionKnowledgeModel {
 
     public void setOpponentAnswer(String opponentAnswer) {
         this.opponentAnswer = opponentAnswer;
+    }
+
+    public int getPlayerPoints() {
+        return playerPoints;
+    }
+
+    public void setPlayerPoints(int playerPoints) {
+        this.playerPoints = playerPoints;
     }
 }

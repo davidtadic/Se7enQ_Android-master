@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,6 +8,137 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.example.david.se7enqtest.PlayCalculationActivity">
+    tools:context=".PlayCalculationActivity"
+    >
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/score4"
+        android:layout_alignParentStart="true"
+        android:textSize="20sp"
+        android:paddingRight="20dp"
+        android:textAlignment="textStart"
+        android:textColor="#FF249B34"
+
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/countdown4"
+        android:layout_centerHorizontal="true"
+        android:textSize="20sp"
+        android:paddingRight="20dp"
+        android:textAlignment="textEnd"
+        android:textColor="#FF249B34"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/opponentScore4"
+        android:layout_alignParentEnd="true"
+        android:textSize="20sp"
+        android:paddingRight="20dp"
+        android:textAlignment="textStart"
+        android:textColor="#FF249B34"
+
+        />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical"
+        android:layout_weight="0.61"
+        android:id="@+id/linearLayoutPlayCalculation"
+        android:layout_below="@+id/countdown4"
+        android:layout_above="@+id/layout_answersPlayCalculation"
+        android:layout_marginTop="60dp"
+        android:layout_marginBottom="20dp"
+        >
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:id="@+id/playCalculation"
+            android:textSize="50sp"
+            android:gravity="center"
+            android:textAlignment="center"
+
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:id="@+id/layout_answersPlayCalculation"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="30dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        >
+
+        <LinearLayout
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:orientation="horizontal"
+            android:weightSum="1.0"
+            android:id="@+id/linearLayout2PlayCalculation">
+            <Button
+                android:id="@+id/answer1PlayCalculation"
+                android:layout_height="wrap_content"
+                android:layout_weight=".5"
+                android:layout_width="0dip"
+                android:background="#979292"
+                android:layout_marginBottom="7dp"
+                android:layout_marginEnd="7dp"
+                android:textColor="#000"
+                android:textSize="25sp" />
+
+            <Button
+                android:id="@+id/answer2PlayCalculation"
+                android:layout_height="wrap_content"
+                android:layout_weight=".5"
+                android:layout_width="0dip"
+                android:layout_marginStart="7dp"
+                android:layout_marginBottom="7dp"
+                android:background="#979292"
+                android:textColor="#000"
+                android:textSize="25sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:orientation="horizontal"
+            >
+            <Button
+                android:id="@+id/answer3PlayCalculation"
+                android:layout_height="wrap_content"
+                android:layout_weight=".5"
+                android:layout_width="0dip"
+                android:layout_marginTop="7dp"
+                android:background="#979292"
+                android:textColor="#000"
+                android:layout_marginEnd="7dp"
+                android:textSize="25sp" />
+
+            <Button
+                android:id="@+id/answer4PlayCalculation"
+                android:layout_marginTop="7dp"
+                android:layout_height="wrap_content"
+                android:layout_weight=".5"
+                android:background="#979292"
+                android:textColor="#000"
+                android:layout_marginStart="7dp"
+                android:layout_width="0dip"
+                android:textSize="25sp" />
+        </LinearLayout>
+
+    </LinearLayout>
 
 </RelativeLayout>

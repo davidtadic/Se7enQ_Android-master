@@ -89,13 +89,13 @@ public class CalculationModel {
         this.wrongResult3 = wrongResult3;
     }
 
-    public List<Integer> getQuestionOptions(){
-        List<Integer> shuffle = new ArrayList<Integer>();
+    public List<String> getQuestionOptions(){
+        List<String> shuffle = new ArrayList<String>();
 
-        shuffle.add(correctResult);
-        shuffle.add(wrongResult1);
-        shuffle.add(wrongResult2);
-        shuffle.add(wrongResult3);
+        shuffle.add(String.valueOf(correctResult));
+        shuffle.add(String.valueOf(wrongResult1));
+        shuffle.add(String.valueOf(wrongResult2));
+        shuffle.add(String.valueOf(wrongResult3));
 
         Collections.shuffle(shuffle);
 

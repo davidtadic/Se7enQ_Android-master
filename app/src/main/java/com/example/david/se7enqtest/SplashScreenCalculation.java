@@ -8,7 +8,7 @@ import android.widget.TextView;
 
 public class SplashScreenCalculation extends Activity {
 
-    //private static int SPLASH_TIME_OUT = 1500;
+    private static int SPLASH_TIME_OUT = 1500;
     TextView round;
     TextView calculation;
 
@@ -21,7 +21,7 @@ public class SplashScreenCalculation extends Activity {
         calculation = (TextView)findViewById(R.id.calculation);
 
 
-        /*new Handler().postDelayed(new Runnable() {
+        new Handler().postDelayed(new Runnable() {
 
 
             @Override
@@ -32,6 +32,6 @@ public class SplashScreenCalculation extends Activity {
 
                 finish();
             }
-        }, SPLASH_TIME_OUT);*/
+        }, SPLASH_TIME_OUT);
     }
 }

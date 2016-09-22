@@ -6,7 +6,6 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -35,7 +34,6 @@ public class PlaySynonymsActivity extends Activity{
     Button answer2;
     Button answer3;
     Button answer4;
-    static int myPoints = 0;
     int questionIndex = 0;
     CountDownTimer timer;
     ApiCall service;
@@ -79,12 +77,6 @@ public class PlaySynonymsActivity extends Activity{
         startQuestion();
 
 
-
-        //save in my score
-        SharedPreferences settingsUser = getSharedPreferences("MY_SCORE_PREF",0);
-        SharedPreferences.Editor editorUser = settingsUser.edit();
-        editorUser.putInt("MY_SCORE", myPoints);
-        editorUser.commit();
 
     }
 
@@ -171,35 +163,19 @@ public class PlaySynonymsActivity extends Activity{
                     final SynonymsModel synonymQuestion = response.body().getQuestion();
                     final int opponentPoints = response.body().getOpponentPoints();
                     String opponentAnswer = response.body().getOpponentAnswer();
+                    int playerPoints = response.body().getPlayerPoints();
 
                     final String opponentAnswer1 = opponentAnswer.split(" ")[0];
                     final String opponentAnswer2 = opponentAnswer.split(" ")[1];
 
                     setEnabledButtons();
                     setAnswer(synonymQuestion);
+                    score.setText("My score: "+String.valueOf(playerPoints));
                     opponentScore.setText("Opponent\n score: "+String.valueOf(opponentPoints));
                     checkAnswer(synonymQuestion);
-                    if(checkAnswer(synonymQuestion)){
-                        myPoints += 1;
-                        score.setText("Score: "+String.valueOf(myPoints));
-                    }
-                    /*new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-
-
-                        }
-                    },2000);*/
-
 
                     //showOpponentsAnswer(opponentAnswer1,opponentAnswer2);
 
-
-                    /*new Handler().postDelayed(new Runnable() {
-
-                        public void run() {
-                        }
-                    }, 200);*/
 
 
                 }
@@ -240,9 +216,7 @@ public class PlaySynonymsActivity extends Activity{
                     answer1.setBackgroundColor(Color.RED);
                     answer1.setTextColor(Color.BLACK);
 
-                    answer2.setEnabled(false);
-                    answer3.setEnabled(false);
-                    answer4.setEnabled(false);
+                    setDisabledButtons();
 
                     counterButtons = 0;
                     correct = false;
@@ -253,6 +227,7 @@ public class PlaySynonymsActivity extends Activity{
                     answer1.setTextColor(Color.BLACK);
 
                     if(counterButtons == 2){
+                        setDisabledButtons();
                         correct = true;
 
                     }
@@ -260,13 +235,6 @@ public class PlaySynonymsActivity extends Activity{
                 userAnswer = answer1.getText().toString()+" second";
 
 
-                /*new Handler().postDelayed(new Runnable() {
-
-                    public void run() {
-                        answer1.setTextColor(Color.BLACK);
-                        answer1.setBackgroundColor(Color.parseColor("#979292"));
-                    }
-                }, 300);*/
             }
         });
 
@@ -277,9 +245,7 @@ public class PlaySynonymsActivity extends Activity{
                     answer2.setBackgroundColor(Color.RED);
                     answer2.setTextColor(Color.BLACK);
 
-                    answer1.setEnabled(false);
-                    answer3.setEnabled(false);
-                    answer4.setEnabled(false);
+                    setDisabledButtons();
 
                     counterButtons = 0;
                     correct = false;
@@ -290,19 +256,13 @@ public class PlaySynonymsActivity extends Activity{
                     answer2.setTextColor(Color.BLACK);
 
                     if(counterButtons == 2){
+                        setDisabledButtons();
                         correct = true;
                     }
                 }
                 userAnswer = answer2.getText().toString()+" second";
 
 
-                /*new Handler().postDelayed(new Runnable() {
-
-                    public void run() {
-                        answer2.setTextColor(Color.BLACK);
-                        answer2.setBackgroundColor(Color.parseColor("#979292"));
-                    }
-                }, 300);*/
             }
         });
 
@@ -313,9 +273,7 @@ public class PlaySynonymsActivity extends Activity{
                     answer3.setBackgroundColor(Color.RED);
                     answer3.setTextColor(Color.BLACK);
 
-                    answer1.setEnabled(false);
-                    answer2.setEnabled(false);
-                    answer4.setEnabled(false);
+                    setDisabledButtons();
 
                     counterButtons = 0;
                     correct = false;
@@ -326,18 +284,12 @@ public class PlaySynonymsActivity extends Activity{
                     answer3.setTextColor(Color.BLACK);
 
                     if(counterButtons == 2){
+                        setDisabledButtons();
                         correct = true;
                     }
                 }
                 userAnswer = answer3.getText().toString()+" second";
 
-                /*new Handler().postDelayed(new Runnable() {
-
-                    public void run() {
-                        answer3.setTextColor(Color.BLACK);
-                        answer3.setBackgroundColor(Color.parseColor("#979292"));
-                    }
-                }, 300);*/
             }
         });
 
@@ -348,9 +300,7 @@ public class PlaySynonymsActivity extends Activity{
                     answer4.setBackgroundColor(Color.RED);
                     answer4.setTextColor(Color.BLACK);
 
-                    answer1.setEnabled(false);
-                    answer2.setEnabled(false);
-                    answer3.setEnabled(false);
+                    setDisabledButtons();
 
                     counterButtons = 0;
                     correct = false;
@@ -361,18 +311,12 @@ public class PlaySynonymsActivity extends Activity{
                     answer4.setTextColor(Color.BLACK);
 
                     if(counterButtons == 2){
+                        setDisabledButtons();
                         correct = true;
                     }
                 }
                 userAnswer = answer4.getText().toString()+" second";
 
-                /*new Handler().postDelayed(new Runnable() {
-
-                    public void run() {
-                        answer4.setTextColor(Color.BLACK);
-                        answer4.setBackgroundColor(Color.parseColor("#979292"));
-                    }
-                }, 300);*/
             }
         });
 

@@ -7,6 +7,7 @@ public class ReceiveQuestionSynonymModel {
     private SynonymsModel question;
     private int opponentPoints;
     private String opponentAnswer;
+    private int playerPoints;
 
 
     public SynonymsModel getQuestion() {
@@ -31,5 +32,13 @@ public class ReceiveQuestionSynonymModel {
 
     public void setOpponentAnswer(String opponentAnswer) {
         this.opponentAnswer = opponentAnswer;
+    }
+
+    public int getPlayerPoints() {
+        return playerPoints;
+    }
+
+    public void setPlayerPoints(int playerPoints) {
+        this.playerPoints = playerPoints;
     }
 }

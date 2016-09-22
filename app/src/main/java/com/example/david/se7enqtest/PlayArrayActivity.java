@@ -37,7 +37,6 @@ public class PlayArrayActivity extends Activity {
     Button answer2;
     Button answer3;
     Button answer4;
-    static int myPoints = 0;
     int questionIndex = 8;
     CountDownTimer timer;
     ApiCall service;
@@ -80,9 +79,7 @@ public class PlayArrayActivity extends Activity {
         getQuestion(answerModel1);
         startQuestion();
 
-        //get my score from pref
-        SharedPreferences settingsScore = getSharedPreferences("MY_SCORE_PREF",0);
-        myPoints = settingsScore.getInt("MY_SCORE",0);
+
     }
 
 
@@ -137,13 +134,13 @@ public class PlayArrayActivity extends Activity {
 
     public void setAnswer(ArrayModel arrayModel){
         //mix answers
-        List<Integer> answers = arrayModel.getQuestionOptions();
+        List<String> answers = arrayModel.getQuestionOptions();
 
         array.setText(arrayModel.getArray());
-        answer1.setText(String.valueOf(answers.get(0)));
-        answer2.setText(String.valueOf(answers.get(1)));
-        answer3.setText(String.valueOf(answers.get(2)));
-        answer4.setText(String.valueOf(answers.get(3)));
+        answer1.setText(answers.get(0));
+        answer2.setText(answers.get(1));
+        answer3.setText(answers.get(2));
+        answer4.setText(answers.get(3));
     }
 
     public void getQuestion(AnswerModel answerModel){
@@ -160,20 +157,20 @@ public class PlayArrayActivity extends Activity {
                         Log.e("Response niz", response.body().toString());
                     }
                     returnColor();
+                    setEnabledButtons();
+
                     final ArrayModel arrayModel = response.body().getQuestion();
+                    int playerPoints = response.body().getPlayerPoints();
                     final int opponentPoints = response.body().getOpponentPoints();
                     final String opponentAnswer = response.body().getOpponentAnswer();
 
 
 
-                    setEnabledButtons();
                     setAnswer(arrayModel);
+                    score.setText("My score: "+String.valueOf(playerPoints));
                     opponentScore.setText("Opponent\n score: "+String.valueOf(opponentPoints));
                     checkAnswer(arrayModel);
-                    if(checkAnswer(arrayModel)){
-                        myPoints += 1;
-                        score.setText("Score: "+String.valueOf(myPoints));
-                    }
+
 
 
                     //showOpponentsAnswer(opponentAnswer);
@@ -223,7 +220,7 @@ public class PlayArrayActivity extends Activity {
                     correct = false;
                 }
 
-
+                setDisabledButtons();
                 userAnswer = answer1.getText().toString();
             }
         });
@@ -244,7 +241,7 @@ public class PlayArrayActivity extends Activity {
                     correct = false;
                 }
 
-
+                setDisabledButtons();
                 userAnswer = answer2.getText().toString();
 
             }
@@ -264,7 +261,7 @@ public class PlayArrayActivity extends Activity {
                     correct = false;
                 }
 
-
+                setDisabledButtons();
                 userAnswer = answer3.getText().toString();
 
             }
@@ -284,7 +281,7 @@ public class PlayArrayActivity extends Activity {
                     correct = false;
                 }
 
-
+                setDisabledButtons();
                 userAnswer = answer4.getText().toString();
             }
         });

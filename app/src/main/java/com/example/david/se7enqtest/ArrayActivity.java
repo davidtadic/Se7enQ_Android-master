@@ -117,13 +117,13 @@ public class ArrayActivity extends Activity {
 
     public void setAnswer(ArrayModel arrayModel){
         //mix answers
-        List<Integer> answers = arrayModel.getQuestionOptions();
+        List<String> answers = arrayModel.getQuestionOptions();
 
         question.setText(arrayModel.getArray());
-        answer1.setText(String.valueOf(answers.get(0)));
-        answer2.setText(String.valueOf(answers.get(1)));
-        answer3.setText(String.valueOf(answers.get(2)));
-        answer4.setText(String.valueOf(answers.get(3)));
+        answer1.setText(answers.get(0));
+        answer2.setText(answers.get(1));
+        answer3.setText(answers.get(2));
+        answer4.setText(answers.get(3));
     }
 
     private void startTimer(){

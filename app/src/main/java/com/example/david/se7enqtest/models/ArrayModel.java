@@ -91,13 +91,13 @@ public class ArrayModel {
         this.wrongNumber3 = wrongNumber3;
     }
 
-    public List<Integer> getQuestionOptions(){
-        List<Integer> shuffle = new ArrayList<Integer>();
+    public List<String> getQuestionOptions(){
+        List<String> shuffle = new ArrayList<String>();
 
-        shuffle.add(correctNumber);
-        shuffle.add(wrongNumber1);
-        shuffle.add(wrongNumber2);
-        shuffle.add(wrongNumber3);
+        shuffle.add(String.valueOf(correctNumber));
+        shuffle.add(String.valueOf(wrongNumber1));
+        shuffle.add(String.valueOf(wrongNumber2));
+        shuffle.add(String.valueOf(wrongNumber3));
 
         Collections.shuffle(shuffle);
 

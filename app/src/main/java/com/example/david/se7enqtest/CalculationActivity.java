@@ -120,13 +120,13 @@ public class CalculationActivity extends Activity {
 
     public void setAnswer(CalculationModel calculationModel){
         //mix answers
-        List<Integer> answers = calculationModel.getQuestionOptions();
+        List<String> answers = calculationModel.getQuestionOptions();
 
         question.setText(calculationModel.getExpression());
-        answer1.setText(String.valueOf(answers.get(0)));
-        answer2.setText(String.valueOf(answers.get(1)));
-        answer3.setText(String.valueOf(answers.get(2)));
-        answer4.setText(String.valueOf(answers.get(3)));
+        answer1.setText(answers.get(0));
+        answer2.setText(answers.get(1));
+        answer3.setText(answers.get(2));
+        answer4.setText(answers.get(3));
     }
 
     private void startTimer(){

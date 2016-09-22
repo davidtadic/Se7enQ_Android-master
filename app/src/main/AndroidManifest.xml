@@ -50,7 +50,8 @@
         <activity android:name=".PlayDefinitionsActivity" />
         <activity android:name=".PlayArrayActivity" />
         <activity android:name=".PlayCalculationActivity" />
-        <activity android:name=".PlayKnowledgeActivity"></activity>
+        <activity android:name=".PlayKnowledgeActivity" />
+        <activity android:name=".PlayFinishActivity"></activity>
     </application>
 
 </manifest>

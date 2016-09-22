@@ -37,7 +37,6 @@ public class PlayDefinitionsActivity extends Activity {
     Button answer2;
     Button answer3;
     Button answer4;
-    static int myPoints = 0;
     int questionIndex = 4;
     CountDownTimer timer;
     ApiCall service;
@@ -82,9 +81,7 @@ public class PlayDefinitionsActivity extends Activity {
         getQuestion(answerModel1);
         startQuestion();
 
-        //get my score from pref
-        SharedPreferences settingsScore = getSharedPreferences("MY_SCORE_PREF",0);
-        myPoints = settingsScore.getInt("MY_SCORE",0);
+
 
 
 
@@ -168,22 +165,22 @@ public class PlayDefinitionsActivity extends Activity {
                         Log.e("Response definicija", response.body().toString());
                     }
                     returnColor();
+                    setEnabledButtons();
+
                     final DefinitionModel definitionQuestion = response.body().getQuestion();
+                    int playerPoints = response.body().getPlayerPoints();
                     final int opponentPoints = response.body().getOpponentPoints();
                     final String opponentAnswer = response.body().getOpponentAnswer();
 
 
 
-                            setEnabledButtons();
-                            setAnswer(definitionQuestion);
-                            opponentScore.setText("Opponent\n score: "+String.valueOf(opponentPoints));
+                    setAnswer(definitionQuestion);
+                    score.setText("My score: "+String.valueOf(playerPoints));
+                    opponentScore.setText("Opponent\n score: "+String.valueOf(opponentPoints));
                             checkAnswer(definitionQuestion);
-                            if(checkAnswer(definitionQuestion)){
-                                myPoints += 1;
-                                score.setText("Score: "+String.valueOf(myPoints));
-                            }
 
-                            //showOpponentsAnswer(opponentAnswer);
+
+                    //showOpponentsAnswer(opponentAnswer);
 
                 }
                 else{
@@ -228,14 +225,8 @@ public class PlayDefinitionsActivity extends Activity {
                     correct = false;
                 }
 
-                /*new Handler().postDelayed(new Runnable() {
 
-                    public void run() {
-                        answer1.setTextColor(Color.BLACK);
-                        answer1.setBackgroundColor(Color.parseColor("#979292"));
-                    }
-                }, 300);*/
-
+                setDisabledButtons();
                 userAnswer = answer1.getText().toString();
             }
         });
@@ -256,14 +247,8 @@ public class PlayDefinitionsActivity extends Activity {
                     correct = false;
                 }
 
-                /*new Handler().postDelayed(new Runnable() {
 
-                    public void run() {
-                        answer2.setTextColor(Color.BLACK);
-                        answer2.setBackgroundColor(Color.parseColor("#979292"));
-                    }
-                }, 300);*/
-
+                setDisabledButtons();
                 userAnswer = answer2.getText().toString();
 
             }
@@ -283,14 +268,8 @@ public class PlayDefinitionsActivity extends Activity {
                     correct = false;
                 }
 
-                /*new Handler().postDelayed(new Runnable() {
 
-                    public void run() {
-                        answer3.setTextColor(Color.BLACK);
-                        answer3.setBackgroundColor(Color.parseColor("#979292"));
-                    }
-                }, 300);*/
-
+                setDisabledButtons();
                 userAnswer = answer3.getText().toString();
 
             }
@@ -310,14 +289,7 @@ public class PlayDefinitionsActivity extends Activity {
                     correct = false;
                 }
 
-                /*new Handler().postDelayed(new Runnable() {
-
-                    public void run() {
-                        answer4.setTextColor(Color.BLACK);
-                        answer4.setBackgroundColor(Color.parseColor("#979292"));
-                    }
-                }, 300);*/
-
+                setDisabledButtons();
                 userAnswer = answer4.getText().toString();
             }
         });

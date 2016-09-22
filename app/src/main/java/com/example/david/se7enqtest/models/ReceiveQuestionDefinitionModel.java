@@ -8,6 +8,7 @@ public class ReceiveQuestionDefinitionModel {
     private DefinitionModel question;
     private int opponentPoints;
     private String opponentAnswer;
+    private int playerPoints;
 
     public DefinitionModel getQuestion() {
         return question;
@@ -31,5 +32,13 @@ public class ReceiveQuestionDefinitionModel {
 
     public void setOpponentAnswer(String opponentAnswer) {
         this.opponentAnswer = opponentAnswer;
+    }
+
+    public int getPlayerPoints() {
+        return playerPoints;
+    }
+
+    public void setPlayerPoints(int playerPoints) {
+        this.playerPoints = playerPoints;
     }
 }

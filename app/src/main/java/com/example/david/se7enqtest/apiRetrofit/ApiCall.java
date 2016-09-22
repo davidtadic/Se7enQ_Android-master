@@ -9,6 +9,7 @@ import com.example.david.se7enqtest.models.ReceiveQuestionCalculationModel;
 import com.example.david.se7enqtest.models.ReceiveQuestionDefinitionModel;
 import com.example.david.se7enqtest.models.ReceiveQuestionKnowledgeModel;
 import com.example.david.se7enqtest.models.ReceiveQuestionSynonymModel;
+import com.example.david.se7enqtest.models.ReceiveScore;
 import com.example.david.se7enqtest.models.SynonymsModel;
 import com.example.david.se7enqtest.models.TokenModel;
 import com.example.david.se7enqtest.models.UserLogin;
@@ -66,6 +67,10 @@ public interface ApiCall {
 
     @POST("Game/ReceiveQuestion")
     Call<ReceiveQuestionKnowledgeModel> receiveQuestionKnowledge(@Body AnswerModel answer);
+
+    @POST("Game/ReceiveQuestion")
+    Call<ReceiveScore> receiveScore(@Body AnswerModel answer);
+
 
 
 

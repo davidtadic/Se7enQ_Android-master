@@ -27,7 +27,7 @@ public class SplashScreenKnowledge extends Activity {
             @Override
             public void run() {
 
-                Intent i = new Intent(SplashScreenKnowledge.this, PlayCalculationActivity.class);
+                Intent i = new Intent(SplashScreenKnowledge.this, PlayKnowledgeActivity.class);
                 startActivity(i);
 
                 finish();

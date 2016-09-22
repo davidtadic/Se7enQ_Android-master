@@ -8,6 +8,8 @@ public class ReceiveQuestionCalculationModel {
     private CalculationModel question;
     private int opponentPoints;
     private String opponentAnswer;
+    private int playerPoints;
+
 
     public CalculationModel getQuestion() {
         return question;
@@ -31,5 +33,13 @@ public class ReceiveQuestionCalculationModel {
 
     public void setOpponentAnswer(String opponentAnswer) {
         this.opponentAnswer = opponentAnswer;
+    }
+
+    public int getPlayerPoints() {
+        return playerPoints;
+    }
+
+    public void setPlayerPoints(int playerPoints) {
+        this.playerPoints = playerPoints;
     }
 }
