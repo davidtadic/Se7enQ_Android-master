@@ -41,7 +41,7 @@ public class PlaySynonymsActivity extends Activity{
     ApiCall service;
     String userAnswer = "first second";
     AnswerModel answerModel1;
-    boolean correct;
+    boolean correct = false;
     int counterButtons;
 
     @Override

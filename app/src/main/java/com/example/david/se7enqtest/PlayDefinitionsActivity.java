@@ -43,7 +43,7 @@ public class PlayDefinitionsActivity extends Activity {
     ApiCall service;
     String userAnswer = "pera";
     AnswerModel answerModel1;
-    boolean correct;
+    boolean correct = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
