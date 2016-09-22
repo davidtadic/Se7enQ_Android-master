@@ -67,8 +67,8 @@ public class PlayDefinitionsActivity extends Activity {
 
         //getting answer model from synonyms
         SharedPreferences settingsAnswer = getSharedPreferences("ANSWER_MODEL",0);
-        boolean correctFirst = settingsAnswer.getBoolean("ANSWER_CORRECT",false);
-        String answerFirst = settingsAnswer.getString("ANSWER","");
+        boolean correctFirst = settingsAnswer.getBoolean("ANSWER_CORRECT_SYNONYM",false);
+        String answerFirst = settingsAnswer.getString("ANSWER_SYNONYM","");
 
         answerModel1 = new AnswerModel();
         answerModel1.setAnswer(answerFirst);
@@ -114,6 +114,12 @@ public class PlayDefinitionsActivity extends Activity {
                 questionIndex++;
                 final AnswerModel answerModel = getAnswerModel(questionIndex);
                 if(questionIndex == 8){
+                    SharedPreferences settingsAnswer = getSharedPreferences("ANSWER_MODEL",0);
+                    SharedPreferences.Editor editorAnswer = settingsAnswer.edit();
+                    editorAnswer.putBoolean("ANSWER_CORRECT_DEFINITION", correct);
+                    editorAnswer.putString("ANSWER_DEFINITION", userAnswer);
+                    editorAnswer.commit();
+
                     timer.cancel();
                     startActivity(new Intent(PlayDefinitionsActivity.this, SplashScreenArray.class));
                     finish();
@@ -177,15 +183,7 @@ public class PlayDefinitionsActivity extends Activity {
                                 score.setText("Score: "+String.valueOf(myPoints));
                             }
 
-
-
-
-
-
-
                             //showOpponentsAnswer(opponentAnswer);
-
-
 
                 }
                 else{

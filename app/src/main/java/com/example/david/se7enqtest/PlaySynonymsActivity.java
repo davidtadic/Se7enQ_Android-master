@@ -117,8 +117,8 @@ public class PlaySynonymsActivity extends Activity{
                 if(questionIndex == 4) {
                     SharedPreferences settingsAnswer = getSharedPreferences("ANSWER_MODEL",0);
                     SharedPreferences.Editor editorAnswer = settingsAnswer.edit();
-                    editorAnswer.putBoolean("ANSWER_CORRECT", correct);
-                    editorAnswer.putString("ANSWER", userAnswer);
+                    editorAnswer.putBoolean("ANSWER_CORRECT_SYNONYM", correct);
+                    editorAnswer.putString("ANSWER_SYNONYM", userAnswer);
                     editorAnswer.commit();
 
                     timer.cancel();
